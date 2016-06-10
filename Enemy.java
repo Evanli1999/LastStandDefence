@@ -2,22 +2,28 @@
 public class Enemy
 {
     private Position place;
-    private int totalhp;
-    private int currenthp;
+    private int totalHp;
+    private int currentHp;
+    private int pathId;
 
     public int getPos()
     {
         return place;
     }
+    
+    public int getPathId()
+    {
+        return pathId;
+    }
 
     public int getTotalHp()
     {
-        return totalhp;
+        return totalHp;
     }
 
     public int getCurrentHp()
     {
-        return currenthp;
+        return currentHp;
     }
 
     /**
@@ -28,8 +34,8 @@ public class Enemy
      */
     public boolean hit(int power)
     {
-        currenthp -= power;
-        if(currenthp<1)
+        currentHp -= power;
+        if(currentHp<1)
             return true;
         return false;
     }
