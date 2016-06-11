@@ -9,19 +9,21 @@ public class GameBoard extends JFrame
   
   protected MiscImage wavesImage =           new MiscImage(40 , 160, 500, 70, "resources//backings//waves.png");
   protected MiscImage killsImage =           new MiscImage(240, 160, 500, 70, "resources//backings//kills.png");
-  protected MiscImage centerImage =          new MiscImage(460, 160, 500, 70, "resources//backings//center.png");
+  // protected MiscImage centerImage =          new MiscImage(460, 160, 500, 70, "resources//backings//center.png"); Now that I think about it, this isn't actually useful
   protected MiscImage nextWaveImage =        new MiscImage(680, 160, 500, 70, "resources//backings//nextWave.png");
-  protected MiscImage pauseImage =           new MiscImage(660, 160, 500, 70, "resources//backings//pause.png");
+  protected MiscImage pauseImage =           new MiscImage(880, 160, 500, 70, "resources//backings//pause.png");
   
   protected MiscImage backgroundImage =      new MiscImage(0 , 1080, 0 , 600, "resources//overall//background.png");
-  protected MiscImage boardBackgroundImage = new MiscImage(40, 1000, 40, 440, "resources//overall//boardBackground.png");
+  protected MiscImage boardBackgroundImage = new MiscImage(40, 1000, 40, 440, "resources//overall//boardBackground.png"); // This is actually not useless, it's used for a bit of checking, will clean up soon(tm)
   
-  protected MiscImage baseImage =            new MiscImage(840, 160, 500, 70, "resources//entities//base.png"); // These coordinates can be changed depending on how we want to set up the map
+  protected MiscImage baseImage =            new MiscImage(840, 160, 265, 70, "resources//entities//base.png"); // These coordinates can be changed depending on how we want to set up the map
   
-  protected MiscImage currentTurretImage =   new MiscImage(); // I'll deal with this one later
-  protected MiscImage buttonsImage =         new MiscImage(); // I'll deal with this one later
+  protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources//turrets//blue.png"); // I'll deal with this one later
+  protected MiscImage buttonsImage =         new MiscImage(478, 125, 520, 30, "resources//controls//arrows.png"); // I'll deal with this one later
   
-  protected ArrayList<MiscImage> path;    
+  protected MiscImage path =                 new MiscImage(40, 880, 80, 360, "resources//entities//path.png");
+  
+  // protected ArrayList<MiscImage> path;    This is placeholder at the moment, the path will be procedurally generated based upon the coordinates I get from the other logic classes, right now I'm hardcoding a path
   protected ArrayList<MiscImage> turrets;
   // protected ArrayList<Square> squares; Currently commented off because I don't have the squares class yet
   
@@ -46,6 +48,13 @@ public class GameBoard extends JFrame
     main.addMouseMotionListener(mouse);
     
     main.add(backgroundImage);
+    main.add(wavesImage);
+    main.add(killsImage);
+    main.add(nextWaveImage);
+    main.add(pauseImage);
+    main.add(baseImage);
+    main.add(buttonsImage);
+    main.add(currentTurretImage);
     
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
     pack ();                                             // this is apparently required
