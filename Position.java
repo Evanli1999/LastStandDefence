@@ -49,11 +49,16 @@ public class Position
 
     public int distance(Position checkplace)
     {
-        return Math.abs(x-checkplace.getX()+(y-checkplace.getY()));
+        return Math.abs(x-checkplace.getX())+Math.abs(y-checkplace.getY());
     }
 
     public int distance(int nx, int ny)
     {
-        return Math.abs(x-nx+(y-ny));
+        return Math.abs(x-nx)+Math.abs(y-ny);
+    }
+    
+    public String toString()
+    {
+        return "("+x+","+y+")";
     }
 }

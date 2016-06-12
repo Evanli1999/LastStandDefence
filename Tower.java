@@ -4,7 +4,7 @@ public class Tower
     int period; 
     int damage;
     int range; 
-    
+
     final Position pos; 
     public Tower (int initializeid, Position p)
     {
@@ -15,33 +15,57 @@ public class Tower
         //{
         // damage = ...; ...    
         //}
-        
-        atkseq = new Thread(new runnable()
-        {
-            public void run()
-            {
-                int atkindex = 0; 
-                int minPathID; 
-                while (true)
+
+        Thread atkseq = new Thread(new Runnable()
                 {
-                    atkindex = 0; 
-                    maxPathID = 0;
-                    for (int i = 0; i < LSD.wave.size(); i++)
+                    public void run()
                     {
-                        if (LSD.wave.get(i).inRange(this))
+                        int atkindex = 0; 
+                        int maxPathID; 
+                        while (true)
                         {
-                            if (LSD.wave.get(i).getPathID() > maxPathID)
+                            atkindex = 0; 
+                            maxPathID = 0;
+                            for (int i = 0; i < LSD.wave.size(); i++)
                             {
-                                maxPathID = LSD.wave.get(i).getPathID(); 
-                                atkindex = i; 
+                                if (LSD.wave.get(i).inRange(Tower.this))
+                                {
+                                    if (LSD.wave.get(i).getPathId() > maxPathID)
+                                    {
+                                        maxPathID = LSD.wave.get(i).getPathId(); 
+                                        atkindex = i; 
+                                    }
+                                }
                             }
+                            LSD.wave.get(atkindex).hit(damage); 
+                            try
+                            {
+                                Thread.sleep (period); //period is specified in milliseconds
+                            }
+                            catch(Exception e)
+                            {}
                         }
                     }
-                    LSD.wave.get(atkindex).hit(damage); 
-                    Thread.sleep (period); //period is specified in milliseconds
-                }
-            }
-        }); 
+                }); 
     }
-    
+
+    public Position getPos()
+    {
+        return pos;
+    }
+
+    public int getRange()
+    {
+        return range;
+    }
+
+    public int getPower()
+    {
+        return damage;
+    }
+
+    public int getPeriod()
+    {
+        return period;
+    }
 }

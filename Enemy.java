@@ -6,7 +6,7 @@ public class Enemy
     private int currentHp;
     private int pathId;
 
-    public int getPos()
+    public Position getPos()
     {
         return place;
     }
