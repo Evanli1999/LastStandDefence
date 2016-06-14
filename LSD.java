@@ -8,7 +8,7 @@ public class LSD
 {
     protected static int money = 2000;
     protected static int score = 0;
-    static GameBoard aBoard = new GameBoard();
+    static GameBoard aBoard;
     static ArrayList<Tower> towers = new ArrayList(0);
     static ArrayList<Position> path = new ArrayList(0);
     protected static ArrayList<Enemy> wave = new ArrayList(0);
@@ -16,6 +16,7 @@ public class LSD
     public static void main(String args[])
     {
         System.out.println("LSD v.0.01 Codename 'Incompetence'\npress return to add, enter any string then return to remove.");
+        aBoard = new GameBoard(path);
         aBoard.setVisible(true);
         try
         {
