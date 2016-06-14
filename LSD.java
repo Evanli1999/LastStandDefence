@@ -5,13 +5,42 @@ public class LSD
 {
   protected static int money = 2000;
   protected static int score = 0;
-  static GameBoard aBoard = new GameBoard();
+  
+  static ArrayList<Position> path = new ArrayList<Position>();
+  
+  
+  static GameBoard aBoard;
   static ArrayList<Tower> towers = new ArrayList(0);
-  static ArrayList<Position> path = new ArrayList(0);
   protected static ArrayList<Enemy> wave = new ArrayList(0);
   
   public static void main(String args[])
   {
+    
+    path.add(new Position(0, 4));
+    path.add(new Position(1, 4));
+    path.add(new Position(2, 4));
+    path.add(new Position(3, 4));
+    path.add(new Position(4, 4));
+    path.add(new Position(5, 4));
+    path.add(new Position(6, 4));
+    path.add(new Position(7, 4));
+    path.add(new Position(8, 4));
+    path.add(new Position(9, 4));
+    path.add(new Position(10, 4));
+    path.add(new Position(11, 4));
+    path.add(new Position(12, 4));
+    path.add(new Position(13, 4));
+    path.add(new Position(13, 5));
+    path.add(new Position(13, 6));
+    path.add(new Position(14, 6));
+    path.add(new Position(15, 6));
+    path.add(new Position(16, 6));
+    path.add(new Position(17, 6));
+    path.add(new Position(18, 6));
+    path.add(new Position(19, 6));
+    
+    aBoard = new GameBoard(path);
+    
     System.out.println("LSD v.0.01 Codename 'Incompetence'\npress return to add, enter any string then return to remove.");
     aBoard.setVisible(true);
     Scanner little = new Scanner(System.in);

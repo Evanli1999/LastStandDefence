@@ -5,11 +5,8 @@ import javax.swing.*;
 public class GameBoard extends JFrame
 {
   
-  // ArrayList<Square> squares;
-  
   protected MiscImage wavesImage =           new MiscImage(40 , 160, 500, 70, "resources/backings/waves.png");
   protected MiscImage killsImage =           new MiscImage(240, 160, 500, 70, "resources/backings/kills.png");
-  // protected MiscImage centerImage =          new MiscImage(460, 160, 500, 70, "resources//backings//center.png"); Now that I think about it, this isn't actually useful
   protected MiscImage nextWaveImage =        new MiscImage(680, 160, 500, 70, "resources/backings/nextWave.png");
   protected MiscImage pauseImage =           new MiscImage(880, 160, 500, 70, "resources/backings/pause.png");
   protected MiscImage backgroundImage =      new MiscImage(0 , 1080, 0 , 600, "resources/overall/background.png");
@@ -20,11 +17,10 @@ public class GameBoard extends JFrame
   protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources/turrets/blue.png"); // I'll deal with this one later
   protected MiscImage buttonsImage =         new MiscImage(478, 125, 520, 30, "resources/controls/arrows.png"); // I'll deal with this one later
   
-  protected MiscImage path =                 new MiscImage(40, 880, 80, 360, "resources/entities/path.png");
+  // protected MiscImage path =                 new MiscImage(40, 880, 80, 360, "resources/entities/path.png"); Time to remove this and legitimatelly generate a path
   
-  // protected ArrayList<MiscImage> path;    This is placeholder at the moment, the path will be procedurally generated based upon the coordinates I get from the other logic classes, right now I'm hardcoding a path
+  protected ArrayList<MiscImage> path = new ArrayList<MiscImage>(); // Path will be an arrayList of position objects, I'd presume..?
   protected ArrayList<MiscImage> turrets = new ArrayList<MiscImage>();
-  // protected ArrayList<Square> squares; Currently commented off because I don't have the squares class yet
   
   protected DrawArea main; // This is the main area where all of our components will be drawn onto.
   
@@ -32,18 +28,23 @@ public class GameBoard extends JFrame
   
   // Okay, for now, I'm defining each square to be 40px by 40px
   
-  public GameBoard()
+  public GameBoard(ArrayList<Position> aPath)
   {
     
     msListen mouse = new msListen();
-    
-    // squares = new ArrayList<Square>();
     
     main = new DrawArea(1080, 630);
     
     main.setLayout(null);
     main.addMouseListener(mouse);
     main.addMouseMotionListener(mouse);
+    
+    for(int i = 0; i < aPath.size(); i++)
+    {
+      int squareX = (aPath.get(i).getX() * 40) + 40;
+      int squareY = (aPath.get(i).getY() * 40) + 40;
+      path.add(new MiscImage(squareX, 40, squareY, 40, "resources\\entities\\path.png"));
+    }
     
     main.add(backgroundImage);
     main.add(wavesImage);
@@ -55,6 +56,7 @@ public class GameBoard extends JFrame
     main.add(currentTurretImage);
     
     main.add(turrets);
+    main.add(path);
     
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
     pack ();                                             // this is apparently required
@@ -79,6 +81,8 @@ public class GameBoard extends JFrame
     main.add(currentTurretImage);
     
     main.add(turrets);
+    main.add(path);
+    
   }
   
   public void addTower(Tower toAdd)
@@ -147,7 +151,6 @@ public class GameBoard extends JFrame
     
     public void mouseMoved(MouseEvent e)
     {
-      //System.out.println("(" + e.getX() + ", " + e.getY() + ")");
     }
     
   }
