@@ -88,8 +88,8 @@ public class MiscImage
     {
       
       //System.out.println("Image not found");
-      System.out.println(path);
-      ex.printStackTrace();
+      //System.out.println(path);
+      //ex.printStackTrace();
       
     }
     

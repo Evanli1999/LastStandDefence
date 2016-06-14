@@ -15,6 +15,8 @@ public class GameBoard extends JFrame
   protected MiscImage baseImage =            new MiscImage(840, 160, 265, 70, "resources/entities/base.png"); // These coordinates can be changed depending on how we want to set up the map
   
   protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources/turrets/blue.png"); // I'll deal with this one later
+  protected int currentTurretID = 1; // Turret ID Number, between 1 and 4 to represent the four different types of turrets
+  
   protected MiscImage buttonsImage =         new MiscImage(478, 125, 520, 30, "resources/controls/arrows.png"); // I'll deal with this one later
   
   // protected MiscImage path =                 new MiscImage(40, 880, 80, 360, "resources/entities/path.png"); Time to remove this and legitimatelly generate a path
@@ -94,7 +96,7 @@ public class GameBoard extends JFrame
     int towerDrawX = (towerX * 40) + 40;
     int towerDrawY = (towerY * 40) + 40;
     
-    turrets.add(new MiscImage(towerDrawX, 40, towerDrawY, 40, "resources\\turrets\\blue.png"));
+    turrets.add(new MiscImage(towerDrawX, 40, towerDrawY, 40, currentTurretImage.getImg()));
     
     revert();
     main.add(turrets);
@@ -127,6 +129,7 @@ public class GameBoard extends JFrame
   {
     
     public void mouseEntered  (MouseEvent e){}
+    
     public void mouseExited   (MouseEvent e){}
     public void mousePressed  (MouseEvent e){}
     public void mouseReleased (MouseEvent e){}
@@ -147,10 +150,87 @@ public class GameBoard extends JFrame
       }
       
       System.out.println("(MouseClick at" + e.getX() + ", " + e.getY() + ")");
+      
+      // For the control panel
+      
+      if(e.getX() < 508 && e.getX() > 478 && e.getY() < 550 && e.getY() > 520)
+      {
+        buttonsImage.setImg("resources\\controls\\left click.png");
+        
+        currentTurretID--;
+        if(currentTurretID == 0)
+        {
+          currentTurretID = 4;
+        }
+        
+      }
+      else if(e.getX() > 575 && e.getX() < 603 && e.getY() < 550 && e.getY() > 520)
+      {
+        buttonsImage.setImg("resources\\controls\\right click.png");
+        
+        currentTurretID++;
+        if(currentTurretID == 5)
+        {
+          currentTurretID = 1;
+        }
+        
+      }
+      
+      else
+      {
+        buttonsImage.setImg("resources\\controls\\arrows.png");
+      }
+      
+      if(currentTurretID == 1)
+      {
+        currentTurretImage.setImg("resources\\turrets\\blue.png");
+      }
+      else if(currentTurretID == 2)
+      {
+        currentTurretImage.setImg("resources\\turrets\\green.png");
+      }
+      else if(currentTurretID == 3)
+      {
+        currentTurretImage.setImg("resources\\turrets\\red.png");
+      }
+      else if(currentTurretID == 4)
+      {
+        currentTurretImage.setImg("resources\\turrets\\yellow.png");
+      }
+      
+      repaint();
+      
     }
     
     public void mouseMoved(MouseEvent e)
     {
+     
+      if(nextWaveImage.checkBounds(e.getX(), e.getY()))
+      {
+        nextWaveImage.setImg("resources\\backings\\nextWaveSelected.png");
+      }
+      else
+      {
+        nextWaveImage.setImg("resources\\backings\\nextWave.png");
+      }
+      
+      repaint();
+      
+      if(e.getX() < 508 && e.getX() > 478 && e.getY() < 550 && e.getY() > 520)
+      {
+        buttonsImage.setImg("resources\\controls\\left hover.png");
+      }
+      else if(e.getX() > 575 && e.getX() < 603 && e.getY() < 550 && e.getY() > 520)
+      {
+        buttonsImage.setImg("resources\\controls\\right hover.png");
+      }
+      else
+      {
+        buttonsImage.setImg("resources\\controls\\arrows.png");
+      }
+      
+      repaint();
+      
     }
     
   }
