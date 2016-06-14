@@ -45,7 +45,7 @@ public class GameBoard extends JFrame
     {
       int squareX = (aPath.get(i).getX() * 40) + 40;
       int squareY = (aPath.get(i).getY() * 40) + 40;
-      path.add(new MiscImage(squareX, 40, squareY, 40, "resources\\entities\\path.png"));
+      path.add(new MiscImage(squareX, 40, squareY, 40, "resources/entities/path.png"));
     }
     
     main.add(backgroundImage);
@@ -155,7 +155,7 @@ public class GameBoard extends JFrame
       
       if(e.getX() < 508 && e.getX() > 478 && e.getY() < 550 && e.getY() > 520)
       {
-        buttonsImage.setImg("resources\\controls\\left click.png");
+        buttonsImage.setImg("resources/controls/left click.png");
         
         currentTurretID--;
         if(currentTurretID == 0)
@@ -166,7 +166,7 @@ public class GameBoard extends JFrame
       }
       else if(e.getX() > 575 && e.getX() < 603 && e.getY() < 550 && e.getY() > 520)
       {
-        buttonsImage.setImg("resources\\controls\\right click.png");
+        buttonsImage.setImg("resources/controls/right click.png");
         
         currentTurretID++;
         if(currentTurretID == 5)
@@ -178,24 +178,24 @@ public class GameBoard extends JFrame
       
       else
       {
-        buttonsImage.setImg("resources\\controls\\arrows.png");
+        buttonsImage.setImg("resources/controls/arrows.png");
       }
       
       if(currentTurretID == 1)
       {
-        currentTurretImage.setImg("resources\\turrets\\blue.png");
+        currentTurretImage.setImg("resources/turrets/blue.png");
       }
       else if(currentTurretID == 2)
       {
-        currentTurretImage.setImg("resources\\turrets\\green.png");
+        currentTurretImage.setImg("resources/turrets/green.png");
       }
       else if(currentTurretID == 3)
       {
-        currentTurretImage.setImg("resources\\turrets\\red.png");
+        currentTurretImage.setImg("resources/turrets/red.png");
       }
       else if(currentTurretID == 4)
       {
-        currentTurretImage.setImg("resources\\turrets\\yellow.png");
+        currentTurretImage.setImg("resources/turrets/yellow.png");
       }
       
       repaint();
@@ -207,26 +207,26 @@ public class GameBoard extends JFrame
      
       if(nextWaveImage.checkBounds(e.getX(), e.getY()))
       {
-        nextWaveImage.setImg("resources\\backings\\nextWaveSelected.png");
+        nextWaveImage.setImg("resources/backings/nextWaveSelected.png");
       }
       else
       {
-        nextWaveImage.setImg("resources\\backings\\nextWave.png");
+        nextWaveImage.setImg("resources/backings/nextWave.png");
       }
       
       repaint();
       
       if(e.getX() < 508 && e.getX() > 478 && e.getY() < 550 && e.getY() > 520)
       {
-        buttonsImage.setImg("resources\\controls\\left hover.png");
+        buttonsImage.setImg("resources/controls/left hover.png");
       }
       else if(e.getX() > 575 && e.getX() < 603 && e.getY() < 550 && e.getY() > 520)
       {
-        buttonsImage.setImg("resources\\controls\\right hover.png");
+        buttonsImage.setImg("resources/controls/right hover.png");
       }
       else
       {
-        buttonsImage.setImg("resources\\controls\\arrows.png");
+        buttonsImage.setImg("resources/controls/arrows.png");
       }
       
       repaint();

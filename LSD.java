@@ -16,8 +16,6 @@ public class LSD
     public static void main(String args[])
     {
         System.out.println("LSD v.0.01 Codename 'Incompetence'\npress return to add, enter any string then return to remove.");
-        aBoard = new GameBoard(path);
-        aBoard.setVisible(true);
         try
         {
            ArrayList<String> temp = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n').get(0),'#');
@@ -32,6 +30,9 @@ public class LSD
             System.out.println("Could not read file.");
         }
         Scanner little = new Scanner(System.in);
+    aBoard = new GameBoard(path);
+        aBoard.setVisible(true);
+
         while(true)
         {
             String inputs = little.nextLine();
@@ -73,9 +74,11 @@ public class LSD
         {
             if(money>200)//change this to a proper requirement
             {
-                System.out.println("Added tower at "+place);
                 towers.add(new Tower(0,new Position(place)));
                 money-=200; //subtract funds
+                Tower toAdd = new Tower(0,new Position(place));
+                aBoard.addTower(toAdd);
+                System.out.println("Added tower at "+place);
                 //then update graphics as necessary
             }
             else
@@ -95,9 +98,11 @@ public class LSD
                 break;
             }
             if(towers.get(a).getPos().distance(place)==0)
-            {
-                System.out.println("Removed tower "+a+" from "+towers.get(a).getPos());
+            {                
+                Tower toRemove = new Tower(0, new Position(place));
                 towers.remove(a);
+                aBoard.removeTower(toRemove);
+                System.out.println("Removed tower "+a+" from "+towers.get(a).getPos());
                 break;
                 //then update graphics as necessary
             }
@@ -120,7 +125,7 @@ public class LSD
 
         if(width==0)
         {
-	    toR.add(parseThis);
+        toR.add(parseThis);
             return toR;
         }
 
