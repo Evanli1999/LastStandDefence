@@ -49,8 +49,8 @@ public class GameBoard extends JFrame
       path.add(new MiscImage(squareX, 40, squareY, 40, "resources/entities/path.png"));
     }
     
-    spawnEnemies spawner = new spawnEnemies();
-    spawner.start();
+    //spawnEnemies spawner = new spawnEnemies();
+    //spawner.start();
     
     main.add(backgroundImage);
     main.add(wavesImage);
@@ -124,44 +124,99 @@ public class GameBoard extends JFrame
         turrets.remove(i);
       }
     }
-   
+    
     revert();
     repaint();
     
   }
   
+  public void spawnWave(ArrayList<Enemy> enems)
+  {
+    spawnEnemies spawner = new spawnEnemies(enems);
+    spawner.start();
+  }
+  
   class spawnEnemies extends Thread
   {
-   
+    
+    ArrayList<Enemy> enems = new ArrayList<Enemy>();
+    
+    public spawnEnemies(ArrayList<Enemy> enems)
+    {
+      this.enems = enems;
+    }
+    
     public void run()
     {
       
-      int enemIndex = 0;
-      int genRate = 0;
+      int pathCounter = 0;
+      int hereIsACounter = 0;
+      int enemCounter = 0;
       
-      // technically there should be an enemID in the enemy class that tells us which enemy we're attacking
+      boolean plusOne = true;
       
-      String enemPath = "resources/enemies/default.png";
+      int divisBy = 0; // This is so that the generator only generates a new enemy every n number of runs of the thread (n specified below)
+      int rate = 2; // So that the enemy is generated every 2 runs (i.e. every 2 squares)
       
-      System.out.println(path.get(0).getX());
-      System.out.println(path.get(0).getY());
-      
-      enemies.add(new MiscImage(path.get(0).getX(), 40, path.get(0).getY(), 40, enemPath));
-      
-      System.out.println("lmao");
-      revert();
-      repaint();
-      
-      int pathLocation = 0;
-      
-      while(pathLocation < path.size())
+      while(pathCounter < path.size() || enemCounter < enems.size())
       {
         
-        enemies.get(0).setX(path.get(pathLocation).getX());
-        enemies.get(0).setY(path.get(pathLocation).getY());
+        if(enemCounter < enems.size()) // As long as the enemCounter doesn't get to the point where I'm out of bounds, I can execute this section
+        {
+          
+          int enemDrawX = path.get(0).getX();
+          int enemDrawY = path.get(0).getY();
+          String enemPath = "resources/enemies/default.png";
+          
+          // enemPath = "resources/enemies/" + enems.get(enemCounter).getID() + ".png"; // Ideally, this is the kind of setup I'd like to have
+          
+          if(divisBy % rate == 0)
+          {
+            System.out.println("Adding enemy number " + (enemCounter+1) + " at: (" + enemDrawX + ", " + enemDrawY + ")");
+            enemies.add(new MiscImage(enemDrawX, 40, enemDrawY, 40, enemPath));
+            enemCounter++;
+            plusOne = false;
+          }
+          else
+          {
+            System.out.println("Not Adding enemy this run.");
+            plusOne = true;
+          }
+          
+        }
         
-        pathLocation ++;
+        if(divisBy % rate == 0)
+        {
+          hereIsACounter++;
+        }
         
+        divisBy++;
+        
+        int pathIndex = 0;
+        int drawIndex = pathIndex;
+        
+        if(plusOne = true)
+        {
+          pathIndex = (hereIsACounter-1) * rate + 1;
+          System.out.println("The elements will begin by being placed at: (" + path.get(pathIndex).getX() + ", " + path.get(pathIndex).getY() + ")");
+        }
+        else
+        {
+          System.out.println("The elements will begin by being placed at: (" + path.get(pathIndex).getX() + ", " + path.get(pathIndex).getY() + ")");
+          pathIndex = (hereIsACounter-1) * rate;
+        }
+        
+        for(int i = 0; i < enemies.size(); i++)
+        {
+          
+          drawIndex = pathIndex - (i*2);
+          
+          enemies.get(i).setX(path.get(drawIndex).getX());
+          enemies.get(i).setY(path.get(drawIndex).getY());
+          
+        }
+          
+      
         revert();
         repaint();
         
@@ -169,13 +224,116 @@ public class GameBoard extends JFrame
         {
           Thread.sleep(1000);
         }
-        catch (InterruptedException e)
+        catch(InterruptedException e)
         {
         }
         
       }
       
+      
+      
+      /*
+       * 
+       int pathIndex = enemCounter;
+       
+       if(pathCounter < path.size()) // As above, but for pathCounter and path
+       {
+       
+       for(int i = pathIndex-1; i > 0; i--)
+       {
+       
+       System.out.println("Enemy number: " + (pathIndex+1));
+       
+       if(minusOne = true)
+       {
+       System.out.println("This is one of those turns where an enemy was not generated; we must substract one");
+       enemies.get(i).setX(path.get(i*rate - 1).getX());
+       enemies.get(i).setY(path.get(i*rate - 1).getX());
+       }
+       else
+       {
+       System.out.println("This is one of those turns where an enemy was generated; we must not substract one");
+       enemies.get(i).setX(path.get(i*rate).getX());
+       enemies.get(i).setY(path.get(i*rate).getX());
+       }
+       
+       revert();
+       
+       }
+       
+       }
+       
+       try
+       {
+       Thread.sleep(1000);
+       }
+       catch(InterruptedException e)
+       {
+       }
+       
+       }
+       
+       */
+      
     }
+    
+    /*
+     * 
+     public void run()
+     {
+     
+     int enemRateControl = 0;
+     
+     int loopCounter = 0;
+     
+     // technically there should be an enemID in the enemy class that tells us which enemy we're attacking
+     
+     while(loopCounter < 12) // Assume 12 enemies per wave
+     {
+     
+     String enemPath = "resources/enemies/default.png";
+     //String enemPath = "resources/enemies/" + (enemies.get(i).getID()) + ".png"; This is ideally the kind of setup that we'd have
+     
+     if(enemRateControl == 5)
+     {
+     enemRateControl = 0;
+     }
+     
+     if(enemRateControl == 0)
+     {
+     enemies.add(new MiscImage(path.get(0).getX(), 40, path.get(0).getY(), 40, enemPath));
+     enemRateControl ++;
+     loopCounter ++;
+     }
+     
+     }
+     
+     int pathLocation = 0;
+     
+     while(pathLocation < path.size())
+     {
+     
+     enemies.get(0).setX(path.get(pathLocation).getX());
+     enemies.get(0).setY(path.get(pathLocation).getY());
+     
+     pathLocation ++;
+     
+     revert();
+     repaint();
+     
+     try
+     {
+     Thread.sleep(1000);
+     }
+     catch (InterruptedException e)
+     {
+     }
+     
+     }
+     
+     }
+     
+     */
     
   }
   
@@ -258,7 +416,7 @@ public class GameBoard extends JFrame
     
     public void mouseMoved(MouseEvent e)
     {
-     
+      
       if(nextWaveImage.checkBounds(e.getX(), e.getY()))
       {
         nextWaveImage.setImg("resources/backings/nextWaveSelected.png");
