@@ -23,6 +23,7 @@ public class GameBoard extends JFrame
   
   protected ArrayList<MiscImage> path = new ArrayList<MiscImage>(); // Path will be an arrayList of position objects, I'd presume..?
   protected ArrayList<MiscImage> turrets = new ArrayList<MiscImage>();
+  protected ArrayList<MiscImage> enemies = new ArrayList<MiscImage>();
   
   protected DrawArea main; // This is the main area where all of our components will be drawn onto.
   
@@ -48,6 +49,9 @@ public class GameBoard extends JFrame
       path.add(new MiscImage(squareX, 40, squareY, 40, "resources/entities/path.png"));
     }
     
+    spawnEnemies spawner = new spawnEnemies();
+    spawner.start();
+    
     main.add(backgroundImage);
     main.add(wavesImage);
     main.add(killsImage);
@@ -59,6 +63,7 @@ public class GameBoard extends JFrame
     
     main.add(turrets);
     main.add(path);
+    main.add(enemies);
     
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
     pack ();                                             // this is apparently required
@@ -84,7 +89,7 @@ public class GameBoard extends JFrame
     
     main.add(turrets);
     main.add(path);
-    
+    main.add(enemies);    
   }
   
   public void addTower(Tower toAdd)
@@ -122,6 +127,55 @@ public class GameBoard extends JFrame
    
     revert();
     repaint();
+    
+  }
+  
+  class spawnEnemies extends Thread
+  {
+   
+    public void run()
+    {
+      
+      int enemIndex = 0;
+      int genRate = 0;
+      
+      // technically there should be an enemID in the enemy class that tells us which enemy we're attacking
+      
+      String enemPath = "resources/enemies/default.png";
+      
+      System.out.println(path.get(0).getX());
+      System.out.println(path.get(0).getY());
+      
+      enemies.add(new MiscImage(path.get(0).getX(), 40, path.get(0).getY(), 40, enemPath));
+      
+      System.out.println("lmao");
+      revert();
+      repaint();
+      
+      int pathLocation = 0;
+      
+      while(pathLocation < path.size())
+      {
+        
+        enemies.get(0).setX(path.get(pathLocation).getX());
+        enemies.get(0).setY(path.get(pathLocation).getY());
+        
+        pathLocation ++;
+        
+        revert();
+        repaint();
+        
+        try
+        {
+          Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+        }
+        
+      }
+      
+    }
     
   }
   

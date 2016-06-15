@@ -11,7 +11,7 @@ public class LSD
     static GameBoard aBoard;
     static ArrayList<Tower> towers = new ArrayList(0);
     static ArrayList<Position> path = new ArrayList(0);
-    protected static ArrayList<Enemy> wave = new ArrayList(0);
+    static ArrayList<Enemy> wave = new ArrayList(0);
 
     public static void main(String args[])
     {
@@ -158,4 +158,5 @@ public class LSD
 
         return toR;
     }
+    
 }

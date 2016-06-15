@@ -32,7 +32,6 @@ public class Enemy
      * @param power the damage that will be done
      * @returns whether the enemy is dead or not
      */
-    
     public boolean hit(int power)
     {
         currentHp -= power;
