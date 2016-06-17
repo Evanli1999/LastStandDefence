@@ -189,7 +189,7 @@ public class GameBoard extends JFrame
         
         if(enemies.size() > 0)
         {
-                    
+          
           if(divisBy % rate == 0)
           {
             hereIsACounter++;
@@ -238,7 +238,7 @@ public class GameBoard extends JFrame
           
           revert();
           repaint();
-               
+          
         }
         
         
@@ -253,110 +253,7 @@ public class GameBoard extends JFrame
         
       }
       
-      
-      
-      /*
-       * 
-       int pathIndex = enemCounter;
-       
-       if(pathCounter < path.size()) // As above, but for pathCounter and path
-       {
-       
-       for(int i = pathIndex-1; i > 0; i--)
-       {
-       
-       System.out.println("Enemy number: " + (pathIndex+1));
-       
-       if(minusOne = true)
-       {
-       System.out.println("This is one of those turns where an enemy was not generated; we must substract one");
-       enemies.get(i).setX(path.get(i*rate - 1).getX());
-       enemies.get(i).setY(path.get(i*rate - 1).getX());
-       }
-       else
-       {
-       System.out.println("This is one of those turns where an enemy was generated; we must not substract one");
-       enemies.get(i).setX(path.get(i*rate).getX());
-       enemies.get(i).setY(path.get(i*rate).getX());
-       }
-       
-       revert();
-       
-       }
-       
-       }
-       
-       try
-       {
-       Thread.sleep(1000);
-       }
-       catch(InterruptedException e)
-       {
-       }
-       
-       }
-       
-       */
-      
     }
-    
-    /*
-     * 
-     public void run()
-     {
-     
-     int enemRateControl = 0;
-     
-     int loopCounter = 0;
-     
-     // technically there should be an enemID in the enemy class that tells us which enemy we're attacking
-     
-     while(loopCounter < 12) // Assume 12 enemies per wave
-     {
-     
-     String enemPath = "resources/enemies/default.png";
-     //String enemPath = "resources/enemies/" + (enemies.get(i).getID()) + ".png"; This is ideally the kind of setup that we'd have
-     
-     if(enemRateControl == 5)
-     {
-     enemRateControl = 0;
-     }
-     
-     if(enemRateControl == 0)
-     {
-     enemies.add(new MiscImage(path.get(0).getX(), 40, path.get(0).getY(), 40, enemPath));
-     enemRateControl ++;
-     loopCounter ++;
-     }
-     
-     }
-     
-     int pathLocation = 0;
-     
-     while(pathLocation < path.size())
-     {
-     
-     enemies.get(0).setX(path.get(pathLocation).getX());
-     enemies.get(0).setY(path.get(pathLocation).getY());
-     
-     pathLocation ++;
-     
-     revert();
-     repaint();
-     
-     try
-     {
-     Thread.sleep(1000);
-     }
-     catch (InterruptedException e)
-     {
-     }
-     
-     }
-     
-     }
-     
-     */
     
   }
   

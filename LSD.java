@@ -34,10 +34,10 @@ public class LSD
     aBoard = new GameBoard(path);
     aBoard.setVisible(true);
     
-    for(int i = 0; i < 4; i++)
-    {
-      wave.add(new Enemy());
-    }
+    //for(int i = 0; i < 4; i++)
+    //{
+    //  wave.add(new Enemy());
+    //}
     
     for(int i = 0; i < wave.size(); i++)
     {
