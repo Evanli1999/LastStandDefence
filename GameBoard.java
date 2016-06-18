@@ -330,12 +330,59 @@ public class GameBoard extends JFrame
         currentTurretImage.setImg("resources/turrets/yellow.png");
       }
       
+      // Next Wave Button
+      
+      if(nextWaveImage.checkBounds(e.getX(), e.getY()))
+      {
+        nextWaveImage.setImg("resources/backings/nextWaveClicked.png");
+      }
+      else
+      {
+        nextWaveImage.setImg("resources/backings/nextWave.png");
+      }
+      
+      // Pause Button
+      
+      if(pauseImage.checkBounds(e.getX(), e.getY()))
+      {
+        pauseImage.setImg("resources/backings/pauseClicked.png");
+      }
+      else
+      {
+        pauseImage.setImg("resources/backings/pause.png");
+      }
+      
+      // Kills Button
+      
+      if(killsImage.checkBounds(e.getX(), e.getY()))
+      {
+        killsImage.setImg("resources/backings/killsClicked.png");
+      }
+      else
+      {
+        killsImage.setImg("resources/backings/kills.png");
+      }
+      
+      // Waves Button
+      
+      if(wavesImage.checkBounds(e.getX(), e.getY()))
+      {
+        wavesImage.setImg("resources/backings/wavesClicked.png");
+      }
+      
+      else
+      {
+        wavesImage.setImg("resources/backings/waves.png");
+      }
+      
       repaint();
       
     }
     
     public void mouseMoved(MouseEvent e)
     {
+      
+      // Next Wave Button
       
       if(nextWaveImage.checkBounds(e.getX(), e.getY()))
       {
@@ -344,6 +391,40 @@ public class GameBoard extends JFrame
       else
       {
         nextWaveImage.setImg("resources/backings/nextWave.png");
+      }
+      
+      // Pause Button
+      
+      if(pauseImage.checkBounds(e.getX(), e.getY()))
+      {
+        pauseImage.setImg("resources/backings/pauseSelected.png");
+      }
+      else
+      {
+        pauseImage.setImg("resources/backings/pause.png");
+      }
+      
+      // Kills Button
+      
+      if(killsImage.checkBounds(e.getX(), e.getY()))
+      {
+        killsImage.setImg("resources/backings/killsSelected.png");
+      }
+      else
+      {
+        killsImage.setImg("resources/backings/kills.png");
+      }
+      
+      // Waves Button
+      
+      if(wavesImage.checkBounds(e.getX(), e.getY()))
+      {
+        wavesImage.setImg("resources/backings/wavesSelected.png");
+      }
+      
+      else
+      {
+        wavesImage.setImg("resources/backings/waves.png");
       }
       
       repaint();
