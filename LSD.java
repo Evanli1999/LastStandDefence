@@ -331,8 +331,6 @@ static class GameBoard extends JFrame
       
       int progress = 0; // The number of times the thread will have executed; allows me to determine spawn start location
       
-      int spawnRate = 2;
-      
       int startSpawningAt = 0;
       
       while(leftInWave > 0)
@@ -340,8 +338,8 @@ static class GameBoard extends JFrame
         
         if(leftToSpawn > 0)
         {
-          System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
-          //enemies.add(new MiscImage(40 + wave.get(wave.size() - leftToSpawn).getX()*40, 40, 40 + wave.get(wave.size() - leftToSpawn).getY()*40, 40, "resources/enemies/default.png"));
+          //System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
+          enemies.add(new MiscImage(wave.get(wave.size() - leftToSpawn).getPos(), "resources/enemies/default.png"));
           revert();
           repaint();
           leftToSpawn --;
@@ -349,11 +347,12 @@ static class GameBoard extends JFrame
         
         progress++;
         
-        if(((progress-1)*spawnRate) >= path.size())
+        if(((progress-1)) >= path.size())
         {
-          System.out.println("???");
+          //System.out.println("???");
           startSpawningAt = path.size() - 1;
           leftInWave --;
+          enemies.remove(0);
           
         }
         
@@ -362,23 +361,36 @@ static class GameBoard extends JFrame
           
           for(int i = 0; i < progress; i++)
           {
-            startSpawningAt = (progress - 1)*spawnRate;
+            startSpawningAt = (progress - 1);
           }
         
         }
         
-        System.out.println("Objects will start to be spawned at: " + startSpawningAt);
+        //System.out.println("Objects will start to be spawned at: " + startSpawningAt);
         
         for(int i = 0; i < leftInWave-leftToSpawn; i++)
         {
-          wave.get(i).setPos(new Position(path.get(startSpawningAt - (i*spawnRate))));
-          System.out.println("Position for enemy " + (i+1) + " is: " + wave.get(i).getPos());
+          wave.get(i).setPos(new Position(path.get(startSpawningAt - (i))));
+          enemies.get(i).setPos(wave.get(i).getPos());
+          revert();
+          repaint();
+          //System.out.println("Position for enemy " + (i+1) + " is: " + wave.get(i).getPos());
+        }
+        
+        try
+        {
+          Thread.sleep(500);
+        }
+        catch(InterruptedException e)
+        {
         }
           
         
       }
       
-      System.out.println("We're done spawning.");
+      //System.out.println("We're done spawning.");
+      revert();
+      repaint();
       
     }
     

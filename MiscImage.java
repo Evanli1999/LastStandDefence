@@ -85,6 +85,8 @@ public class MiscImage
   public void setX(int newX){ x = newX; }
   public void setY(int newY){ y = newY; }
   
+  public void setPos(Position pos) { x = 40 + pos.getX() * 40; y = 40 + pos.getY() * 40; }
+  
   public void draw(Graphics g){ g.drawImage(img, x, y, null); }
   
   public boolean checkBounds(int xChk, int yChk)
