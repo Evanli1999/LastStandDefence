@@ -17,6 +17,10 @@ public class LSD
   static ArrayList<Position> path = new ArrayList(0);
   static ArrayList<Enemy> wave;
   
+  // Welcome to Kai's clump of boolean controls
+  protected static boolean nextWaveClicked = false;
+  
+  
   public static void main(String args[])
   {
     
@@ -36,10 +40,43 @@ public class LSD
     {
       System.out.println("Could not read file.");
     }
-    wave = new ArrayList(4);
-    Scanner little = new Scanner(System.in);
+    
     aBoard = new GameBoard(path);
     aBoard.setVisible(true);
+    
+    Scanner little = new Scanner(System.in);
+    
+    while(true)
+    {
+      
+      while(!nextWaveClicked){ System.out.print(""); }
+      
+      if(nextWaveClicked)
+      {
+        nextWaveClicked = false;
+        newWave();
+      }
+      
+    }
+    
+    /*
+    while(true)
+    {
+      String inputs = little.nextLine();
+      System.out.println("current position: "+aBoard.select);
+      if(inputs .isEmpty())
+        addTower(aBoard.select,0);
+      else
+        removeTower(aBoard.select);
+    }
+    */
+    
+  }
+  
+  public static void newWave()
+  {
+    
+    wave = new ArrayList(4);
     
     for(int i = 0; i < 4; i++)
     {
@@ -53,15 +90,6 @@ public class LSD
     
     aBoard.spawnWave();
     
-    while(true)
-    {
-      String inputs = little.nextLine();
-      System.out.println("current position: "+aBoard.select);
-      if(inputs .isEmpty())
-        addTower(aBoard.select,0);
-      else
-        removeTower(aBoard.select);
-    }
   }
   
   public static boolean canBuild(Position place)
@@ -340,8 +368,6 @@ static class GameBoard extends JFrame
         {
           //System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
           enemies.add(new MiscImage(wave.get(wave.size() - leftToSpawn).getPos(), "resources/enemies/default.png"));
-          revert();
-          repaint();
           leftToSpawn --;
         }
         
@@ -474,6 +500,7 @@ static class GameBoard extends JFrame
       if(nextWaveImage.checkBounds(e.getX(), e.getY()))
       {
         nextWaveImage.setImg("resources/backings/nextWaveClicked.png");
+        nextWaveClicked = true;
       }
       else
       {
