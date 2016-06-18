@@ -21,6 +21,11 @@ public class Enemy
     {
         return place;
     }
+    
+    public void setPos(Position pos)
+    {
+      place = pos;
+    }
 
     public int getPathId()
     {

@@ -51,7 +51,7 @@ public class LSD
       System.out.println(wave.get(i));
     }
     
-    aBoard.spawnWave(wave);
+    aBoard.spawnWave();
     
     while(true)
     {
@@ -191,7 +191,7 @@ static class GameBoard extends JFrame
   
   protected MiscImage baseImage =            new MiscImage(840, 160, 265, 70, "resources/entities/base.png"); // These coordinates can be changed depending on how we want to set up the map
   
-  protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources/turrets/blue.png"); // I'll deal with this one later
+  protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources/turrets/Gun_A_Idle.png"); // I'll deal with this one later
   protected int currentTurretID = 1; // Turret ID Number, between 1 and 4 to represent the four different types of turrets
   
   protected MiscImage buttonsImage =         new MiscImage(478, 125, 520, 30, "resources/controls/arrows.png"); // I'll deal with this one later
@@ -307,9 +307,9 @@ static class GameBoard extends JFrame
     
   }
   
-  public void spawnWave(ArrayList<Enemy> enems)
+  public void spawnWave()
   {
-    spawnEnemies spawner = new spawnEnemies(enems); // Creates a new spawnEnemies thread that will spawn one wave
+    spawnEnemies spawner = new spawnEnemies(wave); // Creates a new spawnEnemies thread that will spawn one wave
     spawner.start();                                // Starts the spawner thread; spawner will run until it's finished spawning and moving that wave
   }
   
@@ -326,106 +326,16 @@ static class GameBoard extends JFrame
     public void run() // The thread that will be run
     {
       
-      int pathCounter = 0;    // The counter that tracks what square of the path we're in (is this still necessary)
-      int hereIsACounter = 0; // The counter that will continously increment; sets up how many enemies are currently on the board
-      int enemCounter = 0;    // The counter that allows for iteration through the list of enemies
+      int leftToSpawn = wave.size(); // The number of enemies that still have to be spawned
+      int leftInWave  = wave.size(); // The number of enemies that are still on the wave
       
-      boolean plusOne = true; // This is based off if an enemy has been generated this turn; if they have not, while the enems.size() won't increase, we still need to move the current enemies one square ahead
-      
-      int divisBy = 0; // This is so that the generator only generates a new enemy every n number of runs of the thread (n specified below)
-      int rate = 2;   // So that the enemy is generated every 2 runs (i.e. every 2 squares)
-      
-      while(enems.size() > 0)
+      while(leftInWave > 0)
       {
         
-        // Spawning a new enemy
-        
-        if(enemCounter < enems.size()) // As long as the enemCounter doesn't get to the point where I'm out of bounds, I can execute this section
+        if(leftToSpawn > 0)
         {
-          
-          int enemDrawX = path.get(0).getX();
-          int enemDrawY = path.get(0).getY();
-          String enemPath = "resources/enemies/default.png";
-          
-          // enemPath = "resources/enemies/" + enems.get(enemCounter).getID() + ".png"; // Ideally, this is the kind of setup I'd like to have
-          
-          if(divisBy % rate == 0)
-          {
-            //System.out.println("Adding enemy number " + (enemCounter+1) + " at: (" + enemDrawX + ", " + enemDrawY + ")");
-            enemies.add(new MiscImage(enemDrawX, 40, enemDrawY, 40, enemPath));
-            enemCounter++;
-            plusOne = false;
-          }
-          else
-          {
-            //System.out.println("Not Adding enemy this run.");
-            plusOne = true;
-          }
-          
-        }
-        
-        if(enemies.size() > 0)
-        {
-          
-          if(divisBy % rate == 0)
-          {
-            hereIsACounter++;
-          }
-          
-          divisBy++;
-          
-          int pathIndex = 0;
-          int drawIndex = pathIndex;
-          
-          if(hereIsACounter <= enemies.size())
-          {
-            hereIsACounter = enemies.size();
-          }
-          
-          if(plusOne = true)
-          {
-            pathIndex = (hereIsACounter-1) * rate + 1;
-            //System.out.println("The elements will begin by being placed at: (" + path.get(pathIndex).getX() + ", " + path.get(pathIndex).getY() + ")");
-          }
-          else
-          {
-            //System.out.println("The elements will begin by being placed at: (" + path.get(pathIndex).getX() + ", " + path.get(pathIndex).getY() + ")");
-            pathIndex = (hereIsACounter-1) * rate;
-          }
-          
-          if(pathIndex > path.size() - 1)
-          {
-            System.out.println("pathIndex is: " + pathIndex + " and is equal to path.size() - 1: " + (path.size()-1));
-            enemies.remove(0);
-            enems.remove(0);
-            System.out.println("Removed the furthest enemy");
-            pathIndex = path.size() - 2;
-            System.out.println("pathIndex is: " + pathIndex);
-            
-          }
-          
-          for(int i = 0; i < enemies.size(); i++)
-          {
-            drawIndex = pathIndex - (i*2);
-            
-            enemies.get(i).setX(path.get(drawIndex).getX());
-            enemies.get(i).setY(path.get(drawIndex).getY());
-            System.out.println("Drew enemy " + (i+1) + " at: (" + enemies.get(i).getX() + ", " + enemies.get(i).getY() + ")");
-          }
-          
-          revert();
-          repaint();
-          
-        }
-        
-        
-        try
-        {
-          System.out.println("Done one run.");
-          Thread.sleep(250);
-        }
-        catch(InterruptedException e)
-        {
+          System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
+          leftToSpawn --;
         }
         
       }
@@ -492,19 +402,19 @@ static class GameBoard extends JFrame
       
       if(currentTurretID == 1)
       {
-        currentTurretImage.setImg("resources/turrets/blue.png");
+        currentTurretImage.setImg("resources/turrets/Gun_A_Idle.png");
       }
       else if(currentTurretID == 2)
       {
-        currentTurretImage.setImg("resources/turrets/green.png");
+        currentTurretImage.setImg("resources/turrets/Laser_A_Idle.png");
       }
       else if(currentTurretID == 3)
       {
-        currentTurretImage.setImg("resources/turrets/red.png");
+        currentTurretImage.setImg("resources/turrets/Rocket_A.png");
       }
       else if(currentTurretID == 4)
       {
-        currentTurretImage.setImg("resources/turrets/yellow.png");
+        currentTurretImage.setImg("resources/turrets/Taser_A_Idle_1.png");
       }
       
       // Next Wave Button
