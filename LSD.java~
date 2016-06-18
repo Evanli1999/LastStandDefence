@@ -3,6 +3,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
 public class LSD
 {
@@ -11,32 +14,35 @@ public class LSD
   static GameBoard aBoard;
   static ArrayList<Tower> towers = new ArrayList(0);
   static ArrayList<Position> path = new ArrayList(0);
-  static ArrayList<Enemy> wave = new ArrayList(4);
+  static ArrayList<Enemy> wave;
   
   public static void main(String args[])
   {
     
-    System.out.println("LSD v.0.01 Codename 'Incompetence'\npress return to add, enter any string then return to remove.");
+    System.out.println("LSD v.0.3 Codename 'Bubba'\npress return to add, enter any string then return to remove.");
+    
     try
     {
-      ArrayList<String> temp = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n').get(0),'#');
-      
-      for(int a = 0;a<temp.size();a++)
+      ArrayList<String> pathtemp = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n').get(0),'#');
+      //ArrayList<String> pricetemp = parse(parse(new String(Files.readAllBytes(Paths.get("properties.txt"))),'\n').get(0),'#');
+      for(int a = 0;a<pathtemp.size();a++)
       {
-        path.add(new Position(temp.get(a)));
+        path.add(new Position(pathtemp.get(a)));
       }
+      
     }
     catch(IOException e)
     {
       System.out.println("Could not read file.");
     }
+    wave = new ArrayList(4);
     Scanner little = new Scanner(System.in);
     aBoard = new GameBoard(path);
     aBoard.setVisible(true);
     
     for(int i = 0; i < 4; i++)
     {
-      wave.add(new Enemy());
+      wave.add(new Enemy(20));
     }
     
     for(int i = 0; i < wave.size(); i++)
@@ -51,7 +57,7 @@ public class LSD
       String inputs = little.nextLine();
       System.out.println("current position: "+aBoard.select);
       if(inputs .isEmpty())
-        addTower(aBoard.select);
+        addTower(aBoard.select,0);
       else
         removeTower(aBoard.select);
     }
@@ -81,15 +87,15 @@ public class LSD
     return true;
   }
   
-  public static void addTower(Position place)//a flimsy addTower class, makes a default Tower()
+  public static void addTower(Position place, int type)//a flimsy addTower class, makes a default Tower()
   {
     if(canBuild(place))
     {
       if(money>200)//change this to a proper requirement
       {
-        towers.add(new Tower(0,new Position(place)));
+        towers.add(new Tower(type,new Position(place)));
         money-=200; //subtract funds
-        Tower toAdd = new Tower(0,new Position(place));
+        Tower toAdd = new Tower(type,new Position(place));
         aBoard.addTower(toAdd);
         System.out.println("Added tower at "+place);
         //then update graphics as necessary
@@ -112,7 +118,7 @@ public class LSD
       }
       if(towers.get(a).getPos().distance(place)==0)
       {                
-        Tower toRemove = new Tower(0, new Position(place));
+        Tower toRemove = new Tower(towers.get(a).getType(), new Position(place));
         towers.remove(a);
         aBoard.removeTower(toRemove);
         System.out.println("Removed tower "+a+" from "+towers.get(a).getPos());
@@ -170,6 +176,94 @@ public class LSD
     }
     
     return toR;
+  }
+  
+  static class GameBoard extends JFrame
+  {
+    
+    protected MiscImage wavesImage =           new MiscImage(40 , 160, 500, 70, "resources/backings/waves.png");
+    protected MiscImage killsImage =           new MiscImage(240, 160, 500, 70, "resources/backings/kills.png");
+    protected MiscImage nextWaveImage =        new MiscImage(680, 160, 500, 70, "resources/backings/nextWave.png");
+    protected MiscImage pauseImage =           new MiscImage(880, 160, 500, 70, "resources/backings/pause.png");
+    protected MiscImage backgroundImage =      new MiscImage(0 , 1080, 0 , 600, "resources/overall/background.png");
+    protected MiscImage boardBackgroundImage = new MiscImage(40, 1000, 40, 440, "resources/overall/boardBackground.png"); // This is actually not useless, it's used for a bit of checking, will clean up soon(tm)
+    
+    protected MiscImage baseImage =            new MiscImage(840, 160, 265, 70, "resources/entities/base.png"); // These coordinates can be changed depending on how we want to set up the map
+    
+    protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources/turrets/blue.png");     // I'll deal with this one later
+    protected MiscImage buttonsImage =         new MiscImage(478, 125, 520, 30, "resources/controls/arrows.png"); // I'll deal with this one later
+    
+    protected MiscImage path =                 new MiscImage(40, 880, 80, 360, "resources/entities/path.png");
+    
+    protected ArrayList<MiscImage> turrets;
+    
+    protected DrawArea main; // This is the main area where all of our components will be drawn onto.
+    
+    protected Position select = new Position (0,0); //if you want to access this in a static method, use Gameboard.aboard.select
+    
+    // Okay, for now, I'm defining each square to be 40px by 40px
+    
+    public GameBoard()
+    {
+      
+      msListen mouse = new msListen();
+      
+      main = new DrawArea(1080, 630);
+      
+      main.setLayout(null);
+      main.addMouseListener(mouse);
+      main.addMouseMotionListener(mouse);
+      
+      main.add(backgroundImage);
+      main.add(wavesImage);
+      main.add(killsImage);
+      main.add(nextWaveImage);
+      main.add(pauseImage);
+      main.add(baseImage);
+      main.add(buttonsImage);
+      main.add(currentTurretImage);
+      
+      setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
+      pack ();                                             // this is apparently required
+      setTitle ("GUI Testing");                            // set the title of the window
+      setSize (1080, 630);                                 // set the size of the window (in pixels)
+      setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);     // set the close operation (just use EXIT_ON_CLOSE, we're not one of those dicks who minimizes windows when the user hits close)
+      setLocationRelativeTo (null);                        // Center window.
+      
+    }
+    
+    class msListen implements MouseListener, MouseMotionListener
+    {
+      
+      public void mouseEntered  (MouseEvent e){}
+      public void mouseExited   (MouseEvent e){}
+      public void mousePressed  (MouseEvent e){}
+      public void mouseReleased (MouseEvent e){}
+      public void mouseDragged  (MouseEvent e){}
+      
+      public void mouseClicked(MouseEvent e)
+      {
+        if(boardBackgroundImage.checkBounds(e.getX(), e.getY()))
+        {
+          
+          int calcX = e.getX() - 40;
+          int calcY = e.getY() - 40;
+          
+          select.setX(calcX / 40);
+          select.setY(calcY / 40);
+          System.out.println("Selected coordinates: "+select);
+          
+        }
+        
+        System.out.println("(MouseClick at" + e.getX() + ", " + e.getY() + ")");
+      }
+      
+      public void mouseMoved(MouseEvent e)
+      {
+      }
+      
+    }
+    
   }
   
 }
