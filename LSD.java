@@ -333,7 +333,7 @@ static class GameBoard extends JFrame
       
       int spawnRate = 2;
       
-      Position startSpawningAt = new Position();
+      int startSpawningAt = 0;
       
       while(leftInWave > 0)
       {
@@ -341,6 +341,9 @@ static class GameBoard extends JFrame
         if(leftToSpawn > 0)
         {
           System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
+          //enemies.add(new MiscImage(40 + wave.get(wave.size() - leftToSpawn).getX()*40, 40, 40 + wave.get(wave.size() - leftToSpawn).getY()*40, 40, "resources/enemies/default.png"));
+          revert();
+          repaint();
           leftToSpawn --;
         }
         
@@ -349,7 +352,7 @@ static class GameBoard extends JFrame
         if(((progress-1)*spawnRate) >= path.size())
         {
           System.out.println("???");
-          startSpawningAt = new Position(path.get(path.size() - 1));
+          startSpawningAt = path.size() - 1;
           leftInWave --;
           
         }
@@ -359,7 +362,7 @@ static class GameBoard extends JFrame
           
           for(int i = 0; i < progress; i++)
           {
-            startSpawningAt = new Position(path.get((progress - 1)*spawnRate));
+            startSpawningAt = (progress - 1)*spawnRate;
           }
         
         }
@@ -368,7 +371,7 @@ static class GameBoard extends JFrame
         
         for(int i = 0; i < leftInWave-leftToSpawn; i++)
         {
-          wave.get(i).setPos(startSpawningAt);
+          wave.get(i).setPos(new Position(path.get(startSpawningAt - (i*spawnRate))));
           System.out.println("Position for enemy " + (i+1) + " is: " + wave.get(i).getPos());
         }
           

@@ -45,6 +45,35 @@ public class MiscImage
     
   }
   
+  public MiscImage(Position pos, String path)
+  {
+    
+    try
+    {
+      
+      img = ImageIO.read(new File(path));
+      
+    }
+    
+    catch(IOException ex)
+    {
+      
+      //System.out.println("Image not found");
+      System.out.println(path);
+      //ex.printStackTrace();
+      
+    }
+    
+    x = 40 + pos.getX()*40;
+    y = 40 + pos.getY()*40;
+    
+    xSize = 40;
+    ySize = 40;
+    
+    imgPath = path;
+    
+  }
+  
   public int getX(){ return x; }
   public int getY(){ return y; }
   
