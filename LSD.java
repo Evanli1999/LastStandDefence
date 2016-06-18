@@ -198,7 +198,7 @@ static class GameBoard extends JFrame
   
   // protected MiscImage path =                 new MiscImage(40, 880, 80, 360, "resources/entities/path.png"); Time to remove this and legitimatelly generate a path
   
-  protected ArrayList<MiscImage> path = new ArrayList<MiscImage>(); // Path will be an arrayList of position objects, I'd presume..?
+  protected ArrayList<MiscImage> pathImages = new ArrayList<MiscImage>(); // Path will be an arrayList of position objects, I'd presume..?
   protected ArrayList<MiscImage> turrets = new ArrayList<MiscImage>();
   protected ArrayList<MiscImage> enemies = new ArrayList<MiscImage>();
   
@@ -223,7 +223,7 @@ static class GameBoard extends JFrame
     {
       int squareX = (aPath.get(i).getX() * 40) + 40;
       int squareY = (aPath.get(i).getY() * 40) + 40;
-      path.add(new MiscImage(squareX, 40, squareY, 40, "resources/entities/path.png"));
+      pathImages.add(new MiscImage(squareX, 40, squareY, 40, "resources/entities/path.png"));
     }
     
     //spawnEnemies spawner = new spawnEnemies();
@@ -239,7 +239,7 @@ static class GameBoard extends JFrame
     main.add(currentTurretImage);
     
     main.add(turrets);
-    main.add(path);
+    main.add(pathImages);
     main.add(enemies);
     
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
@@ -265,7 +265,7 @@ static class GameBoard extends JFrame
     main.add(currentTurretImage);
     
     main.add(turrets);
-    main.add(path);
+    main.add(pathImages);
     main.add(enemies);    
   }
   
@@ -329,6 +329,12 @@ static class GameBoard extends JFrame
       int leftToSpawn = wave.size(); // The number of enemies that still have to be spawned
       int leftInWave  = wave.size(); // The number of enemies that are still on the wave
       
+      int progress = 0; // The number of times the thread will have executed; allows me to determine spawn start location
+      
+      int spawnRate = 2;
+      
+      Position startSpawningAt = new Position();
+      
       while(leftInWave > 0)
       {
         
@@ -338,7 +344,38 @@ static class GameBoard extends JFrame
           leftToSpawn --;
         }
         
+        progress++;
+        
+        if(((progress-1)*spawnRate) >= path.size())
+        {
+          System.out.println("???");
+          startSpawningAt = new Position(path.get(path.size() - 1));
+          leftInWave --;
+          
+        }
+        
+        else
+        {
+          
+          for(int i = 0; i < progress; i++)
+          {
+            startSpawningAt = new Position(path.get((progress - 1)*spawnRate));
+          }
+        
+        }
+        
+        System.out.println("Objects will start to be spawned at: " + startSpawningAt);
+        
+        for(int i = 0; i < leftInWave-leftToSpawn; i++)
+        {
+          wave.get(i).setPos(startSpawningAt);
+          System.out.println("Position for enemy " + (i+1) + " is: " + wave.get(i).getPos());
+        }
+          
+        
       }
+      
+      System.out.println("We're done spawning.");
       
     }
     
