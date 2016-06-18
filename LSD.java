@@ -12,6 +12,8 @@ public class LSD
 {
   protected static int money = 2000;
   protected static int score = 0;
+  protected static int waves = 0;
+  protected static int kills = 0; 
   static GameBoard aBoard;
   static ArrayList<Tower> towers = new ArrayList(0);
   static ArrayList<Position> path = new ArrayList(0);
@@ -19,6 +21,9 @@ public class LSD
   
   // Welcome to Kai's clump of boolean controls
   protected static boolean nextWaveClicked = false;
+  protected static boolean builtTower = false;
+  
+  protected static boolean waveDone = true;
   
   
   public static void main(String args[])
@@ -49,12 +54,17 @@ public class LSD
     while(true)
     {
       
-      while(!nextWaveClicked){ System.out.print(""); }
+      while(!nextWaveClicked && !builtTower){ System.out.print(""); }
       
       if(nextWaveClicked)
       {
         nextWaveClicked = false;
-        newWave();
+        
+        if(waveDone)
+        {
+          newWave();
+          waves++;
+        }
       }
       
     }
@@ -219,7 +229,7 @@ static class GameBoard extends JFrame
   
   protected MiscImage baseImage =            new MiscImage(840, 160, 265, 70, "resources/entities/base.png"); // These coordinates can be changed depending on how we want to set up the map
   
-  protected MiscImage currentTurretImage =   new MiscImage(524, 40, 518, 40, "resources/turrets/Gun_A_Idle.png"); // I'll deal with this one later
+  protected MiscImage currentTurretImage =   new MiscImage(521, 40, 517, 40, "resources/turrets/1.png"); // I'll deal with this one later
   protected int currentTurretID = 1; // Turret ID Number, between 1 and 4 to represent the four different types of turrets
   
   protected MiscImage buttonsImage =         new MiscImage(478, 125, 520, 30, "resources/controls/arrows.png"); // I'll deal with this one later
@@ -230,7 +240,14 @@ static class GameBoard extends JFrame
   protected ArrayList<MiscImage> turrets = new ArrayList<MiscImage>();
   protected ArrayList<MiscImage> enemies = new ArrayList<MiscImage>();
   
+  protected ArrayList<MiscImage> wavesCounterImage = new ArrayList<MiscImage>();
+  protected ArrayList<MiscImage> moneyCounterImage = new ArrayList<MiscImage>();
+  protected ArrayList<MiscImage> killsCounterImage = new ArrayList<MiscImage>();
+  
   protected DrawArea main; // This is the main area where all of our components will be drawn onto.
+  
+  protected int tempTurretX = 0; // First step of two-step turret authentication process
+  protected int tempTurretY = 0;
   
   protected Position select = new Position (0,0); //if you want to access this in a static method, use Gameboard.aboard.select
   
@@ -254,6 +271,8 @@ static class GameBoard extends JFrame
       pathImages.add(new MiscImage(squareX, 40, squareY, 40, "resources/entities/path.png"));
     }
     
+    setupWavesCounter();
+    
     //spawnEnemies spawner = new spawnEnemies();
     //spawner.start();
     
@@ -270,12 +289,28 @@ static class GameBoard extends JFrame
     main.add(pathImages);
     main.add(enemies);
     
+    main.add(wavesCounterImage);
+    
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
     pack ();                                             // this is apparently required
     setTitle ("GUI Testing");                            // set the title of the window
     setSize (1080, 630);                                 // set the size of the window (in pixels)
     setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);     // set the close operation (just use EXIT_ON_CLOSE, we're not one of those dicks who minimizes windows when the user hits close)
     setLocationRelativeTo (null);                        // Center window.
+    
+  }
+  
+  public void setupWavesCounter()
+  {
+    
+    wavesCounterImage = new ArrayList<MiscImage>();
+    
+    String wavesString = Integer.toString(waves);
+    
+    for(int i = 0; i < wavesString.length(); i++)
+    {
+      wavesCounterImage.add (new MiscImage (138 + (i*12), 12, 528, 15, "resources/numbers/" + wavesString.charAt(i) + ".png"));
+    }
     
   }
   
@@ -295,6 +330,9 @@ static class GameBoard extends JFrame
     main.add(turrets);
     main.add(pathImages);
     main.add(enemies);    
+    
+    setupWavesCounter();
+    main.add(wavesCounterImage);
   }
   
   public void addTower(Tower toAdd)
@@ -337,6 +375,7 @@ static class GameBoard extends JFrame
   
   public void spawnWave()
   {
+    waveDone = false;
     spawnEnemies spawner = new spawnEnemies(wave); // Creates a new spawnEnemies thread that will spawn one wave
     spawner.start();                                // Starts the spawner thread; spawner will run until it's finished spawning and moving that wave
   }
@@ -361,13 +400,16 @@ static class GameBoard extends JFrame
       
       int startSpawningAt = 0;
       
+      Random rn = new Random();
+      int enemID = rn.nextInt(3) + 1;
+      
       while(leftInWave > 0)
       {
         
         if(leftToSpawn > 0)
         {
           //System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
-          enemies.add(new MiscImage(wave.get(wave.size() - leftToSpawn).getPos(), "resources/enemies/default.png"));
+          enemies.add(new MiscImage(wave.get(wave.size() - leftToSpawn).getPos(), "resources/enemies/" + enemID + ".png"));
           leftToSpawn --;
         }
         
@@ -405,7 +447,7 @@ static class GameBoard extends JFrame
         
         try
         {
-          Thread.sleep(500);
+          Thread.sleep(100);
         }
         catch(InterruptedException e)
         {
@@ -417,6 +459,7 @@ static class GameBoard extends JFrame
       //System.out.println("We're done spawning.");
       revert();
       repaint();
+      waveDone = true;
       
     }
     
@@ -434,6 +477,7 @@ static class GameBoard extends JFrame
     
     public void mouseClicked(MouseEvent e)
     {
+      
       if(boardBackgroundImage.checkBounds(e.getX(), e.getY()))
       {
         
@@ -444,6 +488,33 @@ static class GameBoard extends JFrame
         select.setY(calcY / 40);
         System.out.println("Selected coordinates: "+select);
         
+        if(canBuild(select))
+        {
+          
+          if((select.getX() != tempTurretX || select.getY() != tempTurretY))
+          {
+            
+            revert();
+            main.add(new MiscImage(40 + select.getX() * 40, 40, 40 + select.getY() * 40, 40, "resources/turrets/" + currentTurretID + "temp.png"));
+            repaint();
+          
+          }
+          else
+          {
+            revert();
+            turrets.add(new MiscImage(40 + select.getX() * 40, 40, 40 + select.getY() * 40, 40, "resources/turrets/" + currentTurretID + ".png"));
+            revert();
+            repaint();
+            
+            LSD.addTower(select, currentTurretID);
+            
+          }
+          
+        }
+        
+        tempTurretX = select.getX();
+        tempTurretY = select.getY();
+          
       }
       
       System.out.println("(MouseClick at" + e.getX() + ", " + e.getY() + ")");
@@ -480,19 +551,19 @@ static class GameBoard extends JFrame
       
       if(currentTurretID == 1)
       {
-        currentTurretImage.setImg("resources/turrets/Gun_A_Idle.png");
+        currentTurretImage.setImg("resources/turrets/1.png");
       }
       else if(currentTurretID == 2)
       {
-        currentTurretImage.setImg("resources/turrets/Laser_A_Idle.png");
+        currentTurretImage.setImg("resources/turrets/2.png");
       }
       else if(currentTurretID == 3)
       {
-        currentTurretImage.setImg("resources/turrets/Rocket_A.png");
+        currentTurretImage.setImg("resources/turrets/3.png");
       }
       else if(currentTurretID == 4)
       {
-        currentTurretImage.setImg("resources/turrets/Taser_A_Idle_1.png");
+        currentTurretImage.setImg("resources/turrets/4.png");
       }
       
       // Next Wave Button
