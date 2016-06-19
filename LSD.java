@@ -272,6 +272,7 @@ static class GameBoard extends JFrame
     }
     
     setupWavesCounter();
+    setupKillsCounter();
     
     //spawnEnemies spawner = new spawnEnemies();
     //spawner.start();
@@ -290,6 +291,7 @@ static class GameBoard extends JFrame
     main.add(enemies);
     
     main.add(wavesCounterImage);
+    main.add(killsCounterImage);
     
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
     pack ();                                             // this is apparently required
@@ -314,6 +316,19 @@ static class GameBoard extends JFrame
     
   }
   
+  public void setupKillsCounter()
+  {
+    
+    killsCounterImage = new ArrayList<MiscImage>();
+    String killsString = Integer.toString(kills);
+    
+    for(int i = 0; i < killsString.length(); i++)
+    {
+      killsCounterImage.add(new MiscImage(328 + (i*12), 12, 528, 15, "resources/numbers/" + killsString.charAt(i) + ".png"));
+    }
+    
+  }
+  
   public void revert()
   {
     main.revert();
@@ -332,7 +347,10 @@ static class GameBoard extends JFrame
     main.add(enemies);    
     
     setupWavesCounter();
+    setupKillsCounter();
+    
     main.add(wavesCounterImage);
+    main.add(killsCounterImage);
   }
   
   public void addTower(Tower toAdd)
