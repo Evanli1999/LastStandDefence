@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.params=hp
+comment0.target=Enemy(int)
+comment1.params=
+comment1.target=Position\ getPos()
+comment2.params=pos
+comment2.target=void\ setPos(Position)
+comment3.params=
+comment3.target=int\ getPathId()
+comment4.params=
+comment4.target=int\ getTotalHp()
+comment5.params=
+comment5.target=int\ getCurrentHp()
+comment6.params=power
+comment6.target=boolean\ hit(int)
+comment6.text=\r\n\ run\ it\ when\ an\ enemy\ is\ attacked\r\n\ also\ adds\ moniez\ here\ for\ simplicity's\ sake\r\n\ @param\ power\ the\ damage\ that\ will\ be\ done\r\n\ @returns\ whether\ the\ enemy\ is\ dead\ or\ not\r\n
+comment7.params=check
+comment7.target=boolean\ inRange(Tower)
+numComments=8
