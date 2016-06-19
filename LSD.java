@@ -31,7 +31,7 @@ public class LSD
   public static void main(String args[])
   {
     
-    System.out.println("LSD v.0.4 Codename 'Kirishima Kai Ni'\n");
+    System.out.println("LSD v.0.5 Codename 'Carnival Dayo~'\n");
     TimerClass abcde = new TimerClass();
     try
     {
@@ -853,7 +853,7 @@ public class LSD
       {
         enemies.add(new MiscImage(wave.get(i).getPos(), "resources/enemies/" + enemyType + ".png"));
         
-        drawHp();
+        //drawHp();
         
       }
       

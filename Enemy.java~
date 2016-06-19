@@ -42,6 +42,26 @@ public class Enemy
     return currentHp;
   }
   
+  public void advance()
+  {
+    
+    //System.out.println("Advance invoked");
+    
+    int posIndex = 0;
+   
+    for(int i = 0; i < LSD.path.size(); i++)
+    {
+      if(LSD.path.get(i).equals(place))
+      {
+        //System.out.println("Enemy is located at: " + LSD.path.get(i));
+        //System.out.println("Moving enemy to: " + LSD.path.get(i+1));
+        place = new Position(LSD.path.get(i + 1));
+        break;
+      }
+    }
+    
+  }
+  
   /**
    * run it when an enemy is attacked
    * also adds moniez here for simplicity's sake
@@ -56,12 +76,12 @@ public class Enemy
 //     System.out.println("My HP Went down to: " +  currentHp);
     
     currentHp -= power; 
-    System.out.println ("Damaged for: " + power); 
-    System.out.println (currentHp); 
+    //System.out.println ("Damaged for: " + power); 
+    LSD.aBoard.drawHp();
     
     if(currentHp<1)
     {
-      System.out.println ("Am dead"); 
+      //System.out.println ("Am dead"); 
       LSD.money += totalHp/2;
       return true;
     }
