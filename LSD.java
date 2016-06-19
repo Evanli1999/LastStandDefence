@@ -239,8 +239,12 @@ public class LSD
     
     protected DrawArea main;
     
-    public TowerDetails(int turretID /* int turretIndex */)
+    protected int index;
+    
+    public TowerDetails(int turretID, int turretIndex)
     {
+      
+      index = turretIndex;
       
       String title = "Cannon~!";
       
@@ -316,6 +320,7 @@ public class LSD
         if(upDamage.checkBounds(e.getX(), e.getY()))
         {
           upDamage.setImg("resources/popup/upDamageClicked.png");
+          towers.get(index).upgrade("Damage");
         }
         else
         {
@@ -325,6 +330,7 @@ public class LSD
         if(upRange.checkBounds(e.getX(), e.getY()))
         {
           upRange.setImg("resources/popup/upRangeClicked.png");
+          towers.get(index).upgrade("Range");
         }
         else
         {
@@ -334,6 +340,7 @@ public class LSD
         if(upRate.checkBounds(e.getX(), e.getY()))
         {
           upRate.setImg("resources/popup/upRateClicked.png");
+          towers.get(index).upgrade("Rate");
         }
         else
         {
@@ -496,16 +503,16 @@ public class LSD
       
     }
     
-    public boolean containsTower(Position aPos)
+    public int containsTower(Position aPos) // Returns the Tower's index if it's present; otherwise return -1
     {
       for(int i = 0; i < towers.size(); i++)
       {
         if(towers.get(i).getPos().equals(aPos))
         {
-          return true;
+          return i;
         }
       }
-      return false;
+      return -1;
     }
     
     public void setupWavesCounter()
@@ -742,9 +749,9 @@ public class LSD
         select.setY(calcY / 40);
         System.out.println("Selected coordinates: "+select);
         
-        if(containsTower(select))
+        if(containsTower(select) != -1)
         {
-          TowerDetails dets = new TowerDetails(currentTurretID);
+          TowerDetails dets = new TowerDetails(currentTurretID, containsTower(select));
           dets.setVisible(true);
         }
         
