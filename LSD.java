@@ -311,6 +311,8 @@ public class LSD
     public TowerDetails(int turretIndex)
     {
       
+      aBoard.drawRange(turretIndex);
+      
       int turretID = towers.get(turretIndex).getType();
       index = turretIndex;
       
@@ -371,6 +373,18 @@ public class LSD
       main.add(damageTier);
       main.add(rangeTier);
       main.add(rateTier);
+      
+      addWindowListener(new WindowAdapter()
+                          {
+       
+        public void windowClosing(WindowEvent e)
+        {
+          aBoard.revert();
+          aBoard.repaint();
+          dispose();
+        }
+        
+      });
       
       setContentPane(main);                                   // set the content pane to be whatever content pane contains all the others
       pack ();                                                // this is apparently required
@@ -908,6 +922,24 @@ public class LSD
       
       revert();
       repaint();
+      
+    }
+    
+    public void drawRange(int turretIndex)
+    {
+      
+      for(int i = 0; i < path.size(); i++)
+      {
+        
+        if(path.get(i).distance(towers.get(turretIndex).getPos()) <= towers.get(turretIndex).getRange())
+        {
+          
+          main.add(new MiscImage(path.get(i), "resources/entities/range.png"));
+          repaint();
+          
+        }
+        
+      }
       
     }
     
