@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import javax.imageio.*;
+import java.awt.geom.*;
 
 public class MiscImage
 {
@@ -99,6 +100,17 @@ public class MiscImage
     }
     
     return res;
+  }
+  
+  public void rotate(Double rads)
+  {
+    
+    AffineTransform transform = new AffineTransform();
+    transform.rotate(rads, img.getWidth()/2, img.getHeight()/2);
+    
+    AffineTransformOp operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
+    img = operation.filter(img, null);
+    
   }
   
   public void setImg(String path)

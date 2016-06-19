@@ -8,6 +8,8 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
+import java.awt.geom.*;
+
 public class LSD
 {
   protected static int money = 2000;
@@ -473,9 +475,6 @@ public class LSD
       setupMoneyCounter();
       setupLivesCounter();
       
-      //spawnEnemies spawner = new spawnEnemies();
-      //spawner.start();
-      
       main.add(backgroundImage);
       main.add(wavesImage);
       main.add(killsImage);
@@ -716,7 +715,6 @@ public class LSD
           catch(InterruptedException e)
           {
           }
-          
           
         }
         
