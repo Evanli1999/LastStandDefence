@@ -130,6 +130,7 @@ public class Tower
     if(statToUpgrade.toLowerCase().equals("period")||statToUpgrade.toLowerCase().equals("rate"))
     {
       System.out.println("Upgrading rate");
+      
       if(LSD.money<(int)Math.pow(2,upPeriod+1))
         return false;
       LSD.money-=(int)Math.pow(2,upPeriod+1);
@@ -139,6 +140,7 @@ public class Tower
     }
     else if (statToUpgrade.toLowerCase().equals("range"))
     {
+      
       System.out.println("Upgrading Range");
       if(LSD.money<(int)Math.pow(2,upRange+1))
         return false;
@@ -149,6 +151,7 @@ public class Tower
     }
     else if(statToUpgrade.toLowerCase().equals("damage"))
     {
+      
       System.out.println("Upgrading Damage");
       if(LSD.money<(int)Math.pow(2,upDamage+1))
         System.out.println("NO MONEY");

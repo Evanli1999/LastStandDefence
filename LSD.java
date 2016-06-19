@@ -26,6 +26,7 @@ public class LSD
   protected static boolean waveDone = true;
   
   static ArrayList<MiscImage> enemies = new ArrayList<MiscImage>();
+  static ArrayList<MiscImage> enemyHealths = new ArrayList<MiscImage>();
   
   public static void main(String args[])
   {
@@ -94,7 +95,7 @@ public class LSD
     
     for(int i = 0; i < 6; i++)
     {
-      wave.add(new Enemy(20));
+      wave.add(new Enemy(120));
       //System.out.println("Added enemy : " + (i+1));
       
       try
@@ -647,6 +648,7 @@ public class LSD
       main.add(turrets);
       main.add(pathImages);
       main.add(enemies);
+      main.add(enemyHealths);
       
       main.add(wavesCounterImage);
       main.add(killsCounterImage);
@@ -742,6 +744,7 @@ public class LSD
       main.add(turrets);
       main.add(pathImages);
       main.add(enemies);    
+      main.add(enemyHealths);
       
       setupWavesCounter();
       setupKillsCounter();
@@ -796,10 +799,41 @@ public class LSD
     {
       
       enemies = new ArrayList<MiscImage>();
+      enemyHealths = new ArrayList<MiscImage>();
       
       for(int i = 0; i < wave.size(); i++)
       {
         enemies.add(new MiscImage(wave.get(i).getPos(), "resources/enemies/" + enemyType + ".png"));
+        
+        drawHp();
+        
+      }
+      
+      revert();
+      repaint();
+      
+    }
+    
+    public void drawHp()
+    {
+      
+      enemyHealths = new ArrayList<MiscImage>();
+      
+      for(int i = 0; i < wave.size(); i++)
+      {
+        
+        int enemHealthPercent = (int)(((double)wave.get(i).getCurrentHp()/(double)wave.get(i).getTotalHp()) * 100);
+        String healthString = Integer.toString(enemHealthPercent);
+        
+        for(int j = 0; j < healthString.length(); j++)
+        {
+          
+          int drawX = 40 + wave.get(i).getPos().getX() * 40;
+          int drawY = 70 + wave.get(i).getPos().getY() * 40;
+          
+          enemyHealths.add(new MiscImage(drawX + (j*4), 0, drawY, 0, "resources/numbers/" + healthString.charAt(j) + "small.png"));
+          
+        }
         
       }
       

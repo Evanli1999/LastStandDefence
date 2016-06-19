@@ -77,7 +77,7 @@ public class Enemy
     
     currentHp -= power; 
     //System.out.println ("Damaged for: " + power); 
-    System.out.println (currentHp); 
+    LSD.aBoard.drawHp();
     
     if(currentHp<1)
     {
