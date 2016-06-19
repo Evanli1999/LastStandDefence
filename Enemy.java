@@ -45,17 +45,20 @@ public class Enemy
   public void advance()
   {
     
+    System.out.println("Advance invoked");
+    
     int posIndex = 0;
    
     for(int i = 0; i < LSD.path.size(); i++)
     {
       if(LSD.path.get(i).equals(place))
       {
-        posIndex = i;
+        System.out.println("Enemy is located at: " + LSD.path.get(i));
+        System.out.println("Moving enemy to: " + LSD.path.get(i+1));
+        place = new Position(LSD.path.get(i + 1));
+        break;
       }
     }
-    
-    place = new Position(LSD.path.get(posIndex++));
     
   }
   

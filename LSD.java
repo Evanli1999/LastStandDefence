@@ -92,15 +92,60 @@ public class LSD
         for(int i = 0; i < 1; i++)
         {
             wave.add(new Enemy(20));
+            System.out.println("Added enemy : " + (i+1));
         }
 
-        for(int i = 0; i < wave.size(); i++)
+        //aBoard.spawnWave();
+        
+        moveEnemies mv = new moveEnemies();
+        mv.start();
+
+    }
+    
+    static class moveEnemies extends Thread
+    {
+      
+      public void run()
+      {
+        
+        System.out.println("The end of the path: " + path.get(path.size() - 1));
+        
+        while(wave.size() > 0)
         {
-            System.out.println(wave.get(i));
+          
+          System.out.println("Wave size is greater than zero.");
+          
+          for(int i = 0; i < wave.size(); i++)
+          {
+            
+            System.out.println("Enemy: " + (i+1));
+            System.out.println("Position is: " + wave.get(i).getPos());
+            
+            if(wave.get(i).getPos().equals(path.get(path.size() - 1)))
+            {
+              System.out.println("This enemy is at the end of the path; we must remove him.");
+              wave.remove(i);
+            }
+            else
+            {
+              System.out.println("Advanced the enemy.");
+              wave.get(i).advance();
+            }
+            
+          }
+          
+          try
+          {
+            Thread.sleep(250);
+          }
+          catch(InterruptedException e)
+          {
+          }
+          
         }
-
-        aBoard.spawnWave();
-
+        
+      }
+      
     }
 
     public static boolean canBuild(Position place)
