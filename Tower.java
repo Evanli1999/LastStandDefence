@@ -58,8 +58,6 @@ public class Tower
         while (true)
         {
           
-          System.out.println("waoh");
-          
           while(LSD.wave.size() > 0)
           {
             
@@ -77,8 +75,6 @@ public class Tower
                 }
               }
             }
-            
-            System.out.println("Attacking with damage: " + damage);
             
             LSD.wave.get(atkindex).hit(damage);
             

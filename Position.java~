@@ -27,6 +27,28 @@ public class Position
         y = npos.getY();
     }
 
+    public Position (String npos)//string in form (x,y)
+    {
+        x = 0;
+        y = 0;
+
+        for(int a = 0;a<npos.length();a++)
+        {
+            if(npos.charAt(a)==',')
+            {
+                try
+                {x = Integer.parseInt(npos.substring(0,a));}
+                catch(Exception e)
+                {System.out.println("Could not parse "+npos.substring(0,a));}
+
+                try 
+                {y = Integer.parseInt(npos.substring(a+1));}
+                catch(Exception e)
+                {System.out.println("Could not parse "+npos.substring(a+1));}
+            }
+        }
+    }
+
     public int getX()
     {
         return x;
@@ -56,7 +78,7 @@ public class Position
     {
         return Math.abs(x-nx)+Math.abs(y-ny);
     }
-    
+
     public String toString()
     {
         return "("+x+","+y+")";

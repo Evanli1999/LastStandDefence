@@ -78,6 +78,15 @@ public class Position
     {
         return Math.abs(x-nx)+Math.abs(y-ny);
     }
+    
+    public boolean equals(Position somePos)
+    {
+      if(x == somePos.getX() && y == somePos.getY())
+      {
+        return true;
+      }
+      return false;
+    }
 
     public String toString()
     {
