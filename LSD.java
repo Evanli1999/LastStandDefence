@@ -15,9 +15,9 @@ public class LSD
   protected static int waves = 0;
   protected static int kills = 0; 
   static GameBoard aBoard;
-  static ArrayList<Tower> towers = new ArrayList(0);
-  static ArrayList<Position> path = new ArrayList(0);
-  static ArrayList<Enemy> wave;
+  static ArrayList<Tower> towers = new ArrayList<Tower>();
+  static ArrayList<Position> path = new ArrayList<Position>();
+  static ArrayList<Enemy> wave = new ArrayList<Enemy>();
   
   // Welcome to Kai's clump of boolean controls
   protected static boolean nextWaveClicked = false;
@@ -86,9 +86,9 @@ public class LSD
   public static void newWave()
   {
     
-    wave = new ArrayList(4);
+    wave = new ArrayList<Enemy>(1);
     
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < 1; i++)
     {
       wave.add(new Enemy(20));
     }
@@ -179,7 +179,7 @@ public class LSD
       }
     }
     
-    ArrayList<String> toR = new ArrayList(0);
+    ArrayList<String> toR = new ArrayList<String>();
     
     if(width==0)
     {
@@ -421,6 +421,7 @@ static class GameBoard extends JFrame
           startSpawningAt = path.size() - 1;
           leftInWave --;
           enemies.remove(0);
+          wave.remove(0);
           
         }
         
