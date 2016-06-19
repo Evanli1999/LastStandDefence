@@ -14,6 +14,7 @@ public class LSD
   protected static int score = 0;
   protected static int waves = 0;
   protected static int kills = 0; 
+  protected static int lives = 10;
   static GameBoard aBoard;
   static ArrayList<Tower> towers = new ArrayList<Tower>();
   static ArrayList<Position> path = new ArrayList<Position>();
@@ -29,7 +30,7 @@ public class LSD
   public static void main(String args[])
   {
     
-    System.out.println("LSD v.0.3 Codename 'Bubba'\npress return to add, enter any string then return to remove.");
+    System.out.println("LSD v.0.4 Codename 'Kirishima Kai Ni'\n");
     
     try
     {
@@ -223,7 +224,7 @@ static class GameBoard extends JFrame
   protected MiscImage wavesImage =           new MiscImage(40 , 160, 500, 70, "resources/backings/waves.png");
   protected MiscImage killsImage =           new MiscImage(240, 160, 500, 70, "resources/backings/kills.png");
   protected MiscImage nextWaveImage =        new MiscImage(680, 160, 500, 70, "resources/backings/nextWave.png");
-  protected MiscImage pauseImage =           new MiscImage(880, 160, 500, 70, "resources/backings/pause.png");
+  protected MiscImage moneyImage =           new MiscImage(880, 160, 500, 70, "resources/backings/money.png");
   protected MiscImage backgroundImage =      new MiscImage(0 , 1080, 0 , 600, "resources/overall/background.png");
   protected MiscImage boardBackgroundImage = new MiscImage(40, 1000, 40, 440, "resources/overall/boardBackground.png"); // This is actually not useless, it's used for a bit of checking, will clean up soon(tm)
   
@@ -243,6 +244,7 @@ static class GameBoard extends JFrame
   protected ArrayList<MiscImage> wavesCounterImage = new ArrayList<MiscImage>();
   protected ArrayList<MiscImage> moneyCounterImage = new ArrayList<MiscImage>();
   protected ArrayList<MiscImage> killsCounterImage = new ArrayList<MiscImage>();
+  protected ArrayList<MiscImage> livesCounterImage = new ArrayList<MiscImage>();
   
   protected DrawArea main; // This is the main area where all of our components will be drawn onto.
   
@@ -273,6 +275,8 @@ static class GameBoard extends JFrame
     
     setupWavesCounter();
     setupKillsCounter();
+    setupMoneyCounter();
+    setupLivesCounter();
     
     //spawnEnemies spawner = new spawnEnemies();
     //spawner.start();
@@ -281,7 +285,7 @@ static class GameBoard extends JFrame
     main.add(wavesImage);
     main.add(killsImage);
     main.add(nextWaveImage);
-    main.add(pauseImage);
+    main.add(moneyImage);
     main.add(baseImage);
     main.add(buttonsImage);
     main.add(currentTurretImage);
@@ -292,6 +296,8 @@ static class GameBoard extends JFrame
     
     main.add(wavesCounterImage);
     main.add(killsCounterImage);
+    main.add(moneyCounterImage);
+    main.add(livesCounterImage);
     
     setContentPane(main);                                // set the content pane to be whatever content pane contains all the others
     pack ();                                             // this is apparently required
@@ -306,12 +312,11 @@ static class GameBoard extends JFrame
   {
     
     wavesCounterImage = new ArrayList<MiscImage>();
-    
     String wavesString = Integer.toString(waves);
     
     for(int i = 0; i < wavesString.length(); i++)
     {
-      wavesCounterImage.add (new MiscImage (138 + (i*12), 12, 528, 15, "resources/numbers/" + wavesString.charAt(i) + ".png"));
+      wavesCounterImage.add (new MiscImage (138 + (i*9), 12, 528, 15, "resources/numbers/" + wavesString.charAt(i) + ".png"));
     }
     
   }
@@ -324,7 +329,33 @@ static class GameBoard extends JFrame
     
     for(int i = 0; i < killsString.length(); i++)
     {
-      killsCounterImage.add(new MiscImage(328 + (i*12), 12, 528, 15, "resources/numbers/" + killsString.charAt(i) + ".png"));
+      killsCounterImage.add(new MiscImage(328 + (i*9), 12, 528, 15, "resources/numbers/" + killsString.charAt(i) + ".png"));
+    }
+    
+  }
+  
+  public void setupMoneyCounter()
+  {
+    
+    moneyCounterImage = new ArrayList<MiscImage>();
+    String moneyString = Integer.toString(money);
+    
+    for(int i = 0; i < moneyString.length(); i++)
+    {
+      moneyCounterImage.add(new MiscImage(974 + (i*9), 12, 528, 15, "resources/numbers/" + moneyString.charAt(i) + ".png"));
+    }
+    
+  }
+  
+  public void setupLivesCounter()
+  {
+   
+    livesCounterImage = new ArrayList<MiscImage>();
+    String livesString = Integer.toString(lives);
+    
+    for(int i = 0; i < livesString.length(); i++)
+    {
+      livesCounterImage.add(new MiscImage(932 + (i*9), 12, 293, 15, "resources/numbers/" + livesString.charAt(i) + ".png"));
     }
     
   }
@@ -337,7 +368,7 @@ static class GameBoard extends JFrame
     main.add(wavesImage);
     main.add(killsImage);
     main.add(nextWaveImage);
-    main.add(pauseImage);
+    main.add(moneyImage);
     main.add(baseImage);
     main.add(buttonsImage);
     main.add(currentTurretImage);
@@ -348,9 +379,11 @@ static class GameBoard extends JFrame
     
     setupWavesCounter();
     setupKillsCounter();
+    setupMoneyCounter();
     
     main.add(wavesCounterImage);
     main.add(killsCounterImage);
+    main.add(moneyCounterImage);
   }
   
   public void addTower(Tower toAdd)
@@ -599,13 +632,13 @@ static class GameBoard extends JFrame
       
       // Pause Button
       
-      if(pauseImage.checkBounds(e.getX(), e.getY()))
+      if(moneyImage.checkBounds(e.getX(), e.getY()))
       {
-        pauseImage.setImg("resources/backings/pauseClicked.png");
+        moneyImage.setImg("resources/backings/moneyClicked.png");
       }
       else
       {
-        pauseImage.setImg("resources/backings/pause.png");
+        moneyImage.setImg("resources/backings/money.png");
       }
       
       // Kills Button
@@ -651,13 +684,13 @@ static class GameBoard extends JFrame
       
       // Pause Button
       
-      if(pauseImage.checkBounds(e.getX(), e.getY()))
+      if(moneyImage.checkBounds(e.getX(), e.getY()))
       {
-        pauseImage.setImg("resources/backings/pauseSelected.png");
+        moneyImage.setImg("resources/backings/moneySelected.png");
       }
       else
       {
-        pauseImage.setImg("resources/backings/pause.png");
+        moneyImage.setImg("resources/backings/money.png");
       }
       
       // Kills Button
