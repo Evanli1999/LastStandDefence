@@ -26,6 +26,8 @@ public class LSD
   
   protected static boolean waveDone = true;
   
+  static ArrayList<MiscImage> enemies = new ArrayList<MiscImage>();
+  
   
   public static void main(String args[])
   {
@@ -426,7 +428,6 @@ public class LSD
     
     protected ArrayList<MiscImage> pathImages = new ArrayList<MiscImage>(); // Path will be an arrayList of position objects, I'd presume..?
     protected ArrayList<MiscImage> turrets = new ArrayList<MiscImage>();
-    protected ArrayList<MiscImage> enemies = new ArrayList<MiscImage>();
     
     protected ArrayList<MiscImage> wavesCounterImage = new ArrayList<MiscImage>();
     protected ArrayList<MiscImage> moneyCounterImage = new ArrayList<MiscImage>();
@@ -657,6 +658,8 @@ public class LSD
         
         while(leftInWave > 0)
         {
+        
+          System.out.println(waveDone);
           
           if(leftToSpawn > 0)
           {
@@ -713,6 +716,7 @@ public class LSD
         revert();
         repaint();
         waveDone = true;
+        System.out.println("Yay, the wave's done!");
         
       }
       
