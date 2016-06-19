@@ -82,7 +82,7 @@ public class Tower
                 }
               }
               
-              if(LSD.wave.get(atkindex).hit(damage))
+              if(LSD.wave.get(atkindex).hit(damage)&&!LSD.waveDone)
               {
                 System.out.println("Removed: " + atkindex);
                 LSD.wave.remove(atkindex); 

@@ -676,7 +676,6 @@ public class LSD
             startSpawningAt = path.size() - 1;
             leftInWave --;
             enemies.remove(0);
-            wave.remove(0);
             lives--;
           }
           
