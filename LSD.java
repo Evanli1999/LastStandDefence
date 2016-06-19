@@ -420,8 +420,7 @@ public class LSD
       
       for(int i = 0; i < damageString.length(); i++)
       {
-        System.out.println("resources/numbers/" + damageString.charAt(0) + ".png");
-        damageTier.add(new MiscImage(80, 8, 130, 12, "resources/numbers/" + damageString.charAt(0) + ".png"));
+        damageTier.add(new MiscImage(60, 8, 133, 12, "resources/tiers/" + damageString.charAt(0) + ".png"));
       }
       
     }
@@ -434,7 +433,7 @@ public class LSD
       
       for(int i = 0; i < rangeString.length(); i++)
       {
-        rangeTier.add(new MiscImage(80, 8, 230, 12, "resources/numbers/" + rangeString.charAt(0) + ".png"));
+        rangeTier.add(new MiscImage(60, 8, 234, 12, "resources/tiers/" + rangeString.charAt(0) + ".png"));
       }
       
     }
@@ -447,7 +446,7 @@ public class LSD
       
       for(int i = 0; i < rateString.length(); i++)
       {
-        rateTier.add(new MiscImage(80, 8, 330, 12, "resources/numbers/" + rateString.charAt(0) + ".png"));
+        rateTier.add(new MiscImage(60, 8, 335, 12, "resources/tiers/" + rateString.charAt(0) + ".png"));
       }
       
     }
@@ -468,7 +467,7 @@ public class LSD
       public void mouseClicked  (MouseEvent e)
       {
         
-        if(upDamage.checkBounds(e.getX(), e.getY()))
+        if(upDamage.checkBounds(e.getX(), e.getY()) && towers.get(index).getUpDamage() < 8)
         {
           upDamage.setImg("resources/popup/upDamageClicked.png");
           towers.get(index).upgrade("Damage");
@@ -481,7 +480,7 @@ public class LSD
           upDamage.setImg("resources/popup/upDamage.png");
         }
         
-        if(upRange.checkBounds(e.getX(), e.getY()))
+        if(upRange.checkBounds(e.getX(), e.getY()) && towers.get(index).getUpRange() < 8)
         {
           upRange.setImg("resources/popup/upRangeClicked.png");
           towers.get(index).upgrade("Range");
@@ -494,7 +493,7 @@ public class LSD
           upRange.setImg("resources/popup/upRange.png");
         }
         
-        if(upRate.checkBounds(e.getX(), e.getY()))
+        if(upRate.checkBounds(e.getX(), e.getY()) && towers.get(index).getUpPeriod() < 8)
         {
           upRate.setImg("resources/popup/upRateClicked.png");
           towers.get(index).upgrade("Rate");
@@ -514,8 +513,9 @@ public class LSD
       public void mouseMoved    (MouseEvent e)
       {
         
-        if(upDamage.checkBounds(e.getX(), e.getY()))
+        if(upDamage.checkBounds(e.getX(), e.getY()) && towers.get(index).getUpDamage() < 8)
         {
+          System.out.println(towers.get(index).getUpDamage());
           upDamage.setImg("resources/popup/upDamageSelected.png");
         }
         else
@@ -523,7 +523,7 @@ public class LSD
           upDamage.setImg("resources/popup/upDamage.png");
         }
         
-        if(upRange.checkBounds(e.getX(), e.getY()))
+        if(upRange.checkBounds(e.getX(), e.getY()) && towers.get(index).getUpRange() < 8)
         {
           upRange.setImg("resources/popup/upRangeSelected.png");
         }
@@ -532,7 +532,7 @@ public class LSD
           upRange.setImg("resources/popup/upRange.png");
         }
         
-        if(upRate.checkBounds(e.getX(), e.getY()))
+        if(upRate.checkBounds(e.getX(), e.getY()) && towers.get(index).getUpPeriod() < 8)
         {
           upRate.setImg("resources/popup/upRateSelected.png");
         }
