@@ -62,10 +62,10 @@ public class Tower
           System.out.println("LSD.waveDone: " + LSD.waveDone);
           while (!LSD.waveDone)
           {
-            System.out.println("so I guess the wave's not done..?");
+            //System.out.println("so I guess the wave's not done..?");
             while(LSD.wave.size() > 0)
             {
-              System.out.println("And the size is greater than zero..?");
+              //System.out.println("And the size is greater than zero..?");
               atkindex = 0; 
               maxPathID = 0;
               
@@ -84,6 +84,7 @@ public class Tower
               
               if(LSD.wave.get(atkindex).hit(damage))
               {
+                System.out.println("Removed: " + atkindex);
                 LSD.wave.remove(atkindex); 
                 LSD.kills++; 
                 LSD.waveDone = true;

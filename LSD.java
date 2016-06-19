@@ -677,7 +677,7 @@ public class LSD
             leftInWave --;
             enemies.remove(0);
             wave.remove(0);
-            
+            lives--;
           }
           
           else
