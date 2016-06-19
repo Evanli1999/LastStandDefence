@@ -218,6 +218,168 @@ public class LSD
     return toR;
   }
   
+  static class TowerDetails extends JFrame
+  {
+    
+    protected MiscImage towerBlank = new MiscImage(25 , 96, 21, 44, "resources/popup/blank.png ");
+    protected MiscImage towerType  = new MiscImage(130, 96, 21, 44, "resources/popup/cannon.png"); 
+    protected MiscImage tower      = new MiscImage(52 , 40, 22, 40, "resources/turrets/1.png   ");
+    
+    protected MiscImage damage = new MiscImage(25, 96, 84 , 91, "resources/popup/damage.png");
+    protected MiscImage range  = new MiscImage(25, 96, 186, 91, "resources/popup/range.png ");
+    protected MiscImage rate   = new MiscImage(25, 96, 288, 91, "resources/popup/rate.png  ");
+    
+    protected MiscImage upDamage = new MiscImage(130, 96, 84 , 91, "resources/popup/upDamage.png");
+    protected MiscImage upRange  = new MiscImage(130, 96, 186, 91, "resources/popup/upRange.png ");
+    protected MiscImage upRate   = new MiscImage(130, 96, 288, 91, "resources/popup/upRate.png  ");
+    
+    protected MiscImage bg = new MiscImage(0, 250, 0, 420, "resources/popup/background.png");
+    
+    protected DrawArea main;
+    
+    public TowerDetails(int turretID /* int turretIndex */)
+    {
+      
+      String title = "Cannon~!";
+      
+      if(turretID == 1)
+      {
+        towerType  = new MiscImage(130, 96, 21, 44, "resources/popup/cannon.png"); 
+        tower      = new MiscImage(52 , 40, 22, 40, "resources/turrets/1.png   ");
+        title      = "Cannon~!";
+      }
+      
+      else if(turretID == 2)
+      {
+        towerType  = new MiscImage(130, 96, 21, 44, "resources/popup/Laser.png"); 
+        tower      = new MiscImage(52 , 40, 22, 40, "resources/turrets/2.png   ");
+        title      = "Laser~!";
+      }
+      
+      else if(turretID == 3)
+      {
+        towerType  = new MiscImage(130, 96, 21, 44, "resources/popup/Rocket.png"); 
+        tower      = new MiscImage(52 , 40, 22, 40, "resources/turrets/3.png   ");
+        title      = "Rocket~!";
+      }
+      
+      else if(turretID == 4)
+      {
+        towerType  = new MiscImage(130, 96, 21, 44, "resources/popup/Tazer.png"); 
+        tower      = new MiscImage(52 , 40, 22, 40, "resources/turrets/4.png   ");
+        title      = "Tazer~!";
+      }
+      
+      msListen mouse = new msListen();
+      
+      main = new DrawArea(264, 438);
+      main.addMouseListener(mouse);
+      main.addMouseMotionListener(mouse);
+      
+      main.add(bg);
+      
+      main.add(towerBlank);
+      main.add(towerType);
+      main.add(tower);
+      
+      main.add(damage);
+      main.add(range);
+      main.add(rate);
+      
+      main.add(upDamage);
+      main.add(upRange);
+      main.add(upRate);
+      
+      setContentPane(main);                                   // set the content pane to be whatever content pane contains all the others
+      pack ();                                                // this is apparently required
+      setTitle (title);                                       // set the title of the window
+      setSize (264, 438);                                     // set the size of the window (in pixels)
+      setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);     // set the close operation (just use EXIT_ON_CLOSE, we're not one of those dicks who minimizes windows when the user hits close)
+      setLocationRelativeTo (null);                           // Center window.
+      
+    }
+    
+    class msListen implements MouseListener, MouseMotionListener
+    {
+      
+      public void mouseEntered  (MouseEvent e){}
+      public void mouseExited   (MouseEvent e){}
+      public void mousePressed  (MouseEvent e){}
+      public void mouseReleased (MouseEvent e){}
+      public void mouseDragged  (MouseEvent e){}
+      
+      public void mouseClicked  (MouseEvent e)
+      {
+        
+        if(upDamage.checkBounds(e.getX(), e.getY()))
+        {
+          upDamage.setImg("resources/popup/upDamageClicked.png");
+        }
+        else
+        {
+          upDamage.setImg("resources/popup/upDamage.png");
+        }
+        
+        if(upRange.checkBounds(e.getX(), e.getY()))
+        {
+          upRange.setImg("resources/popup/upRangeClicked.png");
+        }
+        else
+        {
+          upRange.setImg("resources/popup/upRange.png");
+        }
+        
+        if(upRate.checkBounds(e.getX(), e.getY()))
+        {
+          upRate.setImg("resources/popup/upRateClicked.png");
+        }
+        else
+        {
+          upRate.setImg("resources/popup/upRate.png");
+        }
+        
+        repaint();
+        
+      }
+      
+      public void mouseMoved    (MouseEvent e)
+      {
+        
+        if(upDamage.checkBounds(e.getX(), e.getY()))
+        {
+          upDamage.setImg("resources/popup/upDamageSelected.png");
+        }
+        else
+        {
+          upDamage.setImg("resources/popup/upDamage.png");
+        }
+        
+        if(upRange.checkBounds(e.getX(), e.getY()))
+        {
+          upRange.setImg("resources/popup/upRangeSelected.png");
+        }
+        else
+        {
+          upRange.setImg("resources/popup/upRange.png");
+        }
+        
+        if(upRate.checkBounds(e.getX(), e.getY()))
+        {
+          upRate.setImg("resources/popup/upRateSelected.png");
+        }
+        else
+        {
+          upRate.setImg("resources/popup/upRate.png");
+        }
+        
+        repaint();
+        
+      }
+
+    }
+    
+  }
+  
   static class EasterEgg extends JFrame
   {
     
@@ -337,8 +499,10 @@ public class LSD
     {
       for(int i = 0; i < towers.size(); i++)
       {
-        if(towers.get(i).getPos().equals(aPos));
-        return true;
+        if(towers.get(i).getPos().equals(aPos))
+        {
+          return true;
+        }
       }
       return false;
     }
@@ -558,7 +722,6 @@ public class LSD
     {
       
       public void mouseEntered  (MouseEvent e){}
-      
       public void mouseExited   (MouseEvent e){}
       public void mousePressed  (MouseEvent e){}
       public void mouseReleased (MouseEvent e){}
@@ -573,6 +736,12 @@ public class LSD
         select.setX(calcX / 40);
         select.setY(calcY / 40);
         System.out.println("Selected coordinates: "+select);
+        
+        if(containsTower(select))
+        {
+          TowerDetails dets = new TowerDetails(currentTurretID);
+          dets.setVisible(true);
+        }
         
         if(boardBackgroundImage.checkBounds(e.getX(), e.getY()))
         {
