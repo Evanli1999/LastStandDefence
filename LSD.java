@@ -92,7 +92,7 @@ public class LSD
     moveEnemies mv = new moveEnemies();
     mv.start();
     
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < 6; i++)
     {
       wave.add(new Enemy(20));
       //System.out.println("Added enemy : " + (i+1));
@@ -156,6 +156,7 @@ public class LSD
         {
         }
         
+        aBoard.drawTurrets();
         aBoard.drawEnemies(enemyType);
         
       }
@@ -802,9 +803,73 @@ public class LSD
         
       }
       
+      revert();
+      repaint();
+      
+    }
+    
+    public void drawTurrets()
+    {
+      
+      turrets = new ArrayList<MiscImage>();
+      
       for(int i = 0; i < towers.size(); i++)
       {
+        
+        turrets.add(new MiscImage(towers.get(i).getPos(), "resources/turrets/" + towers.get(i).getType() + ".png"));
+        
+        double rotation = 0.0;
+        
+        if(wave.size() > 0)
+        {
+          
+          int deltaX = (towers.get(i).getPos().getX() - wave.get(0).getPos().getX());
+          //System.out.println("deltaX: " + deltaX);
+          int deltaY = (towers.get(i).getPos().getY() - wave.get(0).getPos().getY());
+          //System.out.println("deltaY: " + deltaY);
+          
+          if(deltaX == 0)
+          {
+            if(deltaY > 0)
+            {
+              towers.get(i).setRotation(0.0);
+            }
+            else
+            {
+              towers.get(i).setRotation(Math.PI);
+            }
+          }
+          
+          else if(deltaY == 0)
+          {
+            if(deltaX > 0)
+            {
+              towers.get(i).setRotation(-Math.PI/2);
+            }
+            else
+            {
+              towers.get(i).setRotation(Math.PI/2);
+            }
+          }
+          
+          else
+          {
+            
+            if(deltaX < 0)
+            {
+              towers.get(i).setRotation(Math.atan((double)deltaY / deltaX) + Math.PI/2);
+            }
+            
+            else
+            {
+              towers.get(i).setRotation(Math.atan((double)deltaY / deltaX) - Math.PI/2);
+            }
+          }
+          
+        }
+          
         turrets.get(i).rotate(towers.get(i).getRotation());
+        
       }
       
       revert();

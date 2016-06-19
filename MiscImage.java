@@ -105,6 +105,9 @@ public class MiscImage
   public void rotate(Double rads)
   {
     
+    //System.out.println("Rotating: " + rads + " radians.");
+    //System.out.println(img);
+    
     AffineTransform transform = new AffineTransform();
     transform.rotate(rads, img.getWidth()/2, img.getHeight()/2);
     

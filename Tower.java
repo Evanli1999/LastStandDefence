@@ -6,9 +6,11 @@ public class Tower
   int damage;
   int range;
   int upPeriod = 0,upDamage = 0,upRange = 0;
+  
+  double rotation;
   final Position pos; 
   
-  int atkindex = 0;
+  static int atkindex = 0;
   
   public Tower (int initializeid, Position p)
   {
@@ -92,6 +94,16 @@ public class Tower
     return upRange;
   }
   
+  public Double getRotation()
+  {
+    return rotation;
+  }
+  
+  public void setRotation(Double radians)
+  {
+    rotation = radians;
+  }
+  
   public int getValue()
   {
     int moneyz = 100+id*100,price = 100;
@@ -153,6 +165,7 @@ public class Tower
   protected void fire()
   {
     atkindex = -1; 
+    System.out.println("atkindex: " + atkindex);
     int maxPathID = -1;
     
     for (int i = 0; i < LSD.wave.size(); i++)
@@ -163,19 +176,19 @@ public class Tower
         {
           maxPathID = LSD.wave.get(i).getPathId(); 
           atkindex = i; 
-          System.out.println ("Checking"); 
+          //System.out.println ("Checking"); 
         }
       }
     }
     
     if(atkindex!=-1)
     {
-      System.out.println ("Attacking"); 
+      //System.out.println ("Attacking"); 
       try
       {
         if(LSD.wave.get(atkindex).inRange(Tower.this)&&LSD.wave.get(atkindex).hit(damage))
         {
-          System.out.println("Removed: " + atkindex);
+          //System.out.println("Removed: " + atkindex);
           LSD.wave.remove(atkindex); 
           LSD.kills++; 
           if(LSD.wave.size()==0)
@@ -186,40 +199,6 @@ public class Tower
       catch(Exception hotfix) // lmao this is the laziest piece of code I have ever seen
       {}
     }       
-  }
-  
-  protected Double getRotation()
-  {
-    
-    if(atkindex != -1)
-    {
-      
-      System.out.println(atkindex);
-      
-      int turretX = 40 + pos.getX() * 40;
-      int turretY = 40 + pos.getY() * 40;
-      
-      int enemX = 40 + LSD.wave.get(atkindex).getPos().getX() * 40;
-      int enemY = 40 + LSD.wave.get(atkindex).getPos().getY() * 40;
-      
-      int deltaX = Math.abs(turretX - enemX);
-      int deltaY = Math.abs(turretY - enemY);
-      
-      Double ratio = (double)deltaY / (double)deltaX;
-      
-      Double radians = Math.atan(ratio);
-      
-      return radians;
-      
-    }
-    
-    else
-    {
-      
-      return 0.0;
-      
-    }
-    
   }
   
 }
