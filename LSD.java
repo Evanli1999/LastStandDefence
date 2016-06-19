@@ -298,6 +298,10 @@ public class LSD
     
     protected MiscImage bg = new MiscImage(0, 250, 0, 420, "resources/popup/background.png");
     
+    protected ArrayList<MiscImage> damageTier = new ArrayList<MiscImage>();
+    protected ArrayList<MiscImage> rangeTier  = new ArrayList<MiscImage>();
+    protected ArrayList<MiscImage> rateTier   = new ArrayList<MiscImage>();
+    
     protected DrawArea main;
     
     protected int index;
@@ -358,12 +362,92 @@ public class LSD
       main.add(upRange);
       main.add(upRate);
       
+      setupDamageTier();
+      setupRangeTier();
+      setupRateTier();
+      
+      main.add(damageTier);
+      main.add(rangeTier);
+      main.add(rateTier);
+      
       setContentPane(main);                                   // set the content pane to be whatever content pane contains all the others
       pack ();                                                // this is apparently required
       setTitle (title);                                       // set the title of the window
       setSize (264, 438);                                     // set the size of the window (in pixels)
       setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);     // set the close operation (just use EXIT_ON_CLOSE, we're not one of those dicks who minimizes windows when the user hits close)
       setLocationRelativeTo (null);                           // Center window.
+      
+    }
+    
+    protected void revert()
+    {
+      
+      main.revert();
+      
+      main.add(bg);
+      
+      main.add(towerBlank);
+      main.add(towerType);
+      main.add(tower);
+      
+      main.add(damage);
+      main.add(range);
+      main.add(rate);
+      
+      main.add(upDamage);
+      main.add(upRange);
+      main.add(upRate);
+      
+      setupDamageTier();
+      setupRangeTier();
+      setupRateTier();
+      
+      main.add(damageTier);
+      main.add(rangeTier);
+      main.add(rateTier);
+      
+      LSD.aBoard.revert();
+      LSD.aBoard.repaint();
+      
+    }
+    
+    protected void setupDamageTier()
+    {
+      System.out.println("Invoked");
+      damageTier = new ArrayList<MiscImage>();
+      String damageString = Integer.toString(towers.get(index).getUpDamage() + 1);
+      
+      for(int i = 0; i < damageString.length(); i++)
+      {
+        System.out.println("resources/numbers/" + damageString.charAt(0) + ".png");
+        damageTier.add(new MiscImage(80, 8, 130, 12, "resources/numbers/" + damageString.charAt(0) + ".png"));
+      }
+      
+    }
+    
+    protected void setupRangeTier()
+    {
+      
+      rangeTier = new ArrayList<MiscImage>();
+      String rangeString = Integer.toString(towers.get(index).getUpRange() + 1);
+      
+      for(int i = 0; i < rangeString.length(); i++)
+      {
+        rangeTier.add(new MiscImage(80, 8, 230, 12, "resources/numbers/" + rangeString.charAt(0) + ".png"));
+      }
+      
+    }
+    
+    protected void setupRateTier()
+    {
+      
+      rateTier = new ArrayList<MiscImage>();
+      String rateString = Integer.toString(towers.get(index).getUpPeriod() + 1);
+      
+      for(int i = 0; i < rateString.length(); i++)
+      {
+        rateTier.add(new MiscImage(80, 8, 330, 12, "resources/numbers/" + rateString.charAt(0) + ".png"));
+      }
       
     }
     
@@ -387,6 +471,9 @@ public class LSD
         {
           upDamage.setImg("resources/popup/upDamageClicked.png");
           towers.get(index).upgrade("Damage");
+          setupDamageTier();
+          revert();
+          repaint();
         }
         else
         {
@@ -397,6 +484,9 @@ public class LSD
         {
           upRange.setImg("resources/popup/upRangeClicked.png");
           towers.get(index).upgrade("Range");
+          setupRangeTier();
+          revert();
+          repaint();
         }
         else
         {
@@ -407,6 +497,9 @@ public class LSD
         {
           upRate.setImg("resources/popup/upRateClicked.png");
           towers.get(index).upgrade("Rate");
+          setupRateTier();
+          revert();
+          repaint();
         }
         else
         {
@@ -701,13 +794,17 @@ public class LSD
     public void drawEnemies(int enemyType)
     {
       
-      Random rn = new Random();
       enemies = new ArrayList<MiscImage>();
       
       for(int i = 0; i < wave.size(); i++)
       {
         enemies.add(new MiscImage(wave.get(i).getPos(), "resources/enemies/" + enemyType + ".png"));
         
+      }
+      
+      for(int i = 0; i < towers.size(); i++)
+      {
+        turrets.get(i).rotate(towers.get(i).getRotation());
       }
       
       revert();

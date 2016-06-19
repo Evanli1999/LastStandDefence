@@ -47,59 +47,6 @@ public class Tower
             damage = 10;
             range = 3;
         }
-
-        Thread atkseq = new Thread(new Runnable()
-                {
-                    public void run()
-                    {
-                        int atkindex = 0; 
-                        int maxPathID; 
-
-                        while (true)
-                        {
-                            while (!LSD.waveDone)
-                            {
-                                while(LSD.wave.size() > 0)
-                                {
-
-                                    atkindex = 0; 
-                                    maxPathID = 0;
-
-                                    for (int i = 0; i < LSD.wave.size(); i++)
-                                    {
-                                        if (LSD.wave.get(i).inRange(Tower.this))
-                                        {
-                                            if (LSD.wave.get(i).getPathId() > maxPathID)
-                                            {
-                                                maxPathID = LSD.wave.get(i).getPathId(); 
-                                                atkindex = i; 
-                                                System.out.println ("Checking"); 
-                                            }
-                                        }
-                                    }
-
-                                    if(LSD.wave.get(atkindex).hit(damage))
-                                    {
-                                        LSD.wave.remove(atkindex); 
-                                        LSD.kills++; 
-                                    }
-                                    System.out.println ("Attacking"); 
-                                    try
-                                    {
-                                        Thread.sleep (period); //period is specified in milliseconds
-                                        System.out.println ("Waiting"); 
-                                    }
-                                    catch(InterruptedException e)
-                                    {}
-
-                                }
-                            }
-                        }
-                    }
-                });
-
-        atkseq.start();
-
     }
 
     public Position getPos()
@@ -179,5 +126,43 @@ public class Tower
         }
         else
             return false;
+    }
+
+    protected void fire()
+    {
+        int atkindex = -1; 
+        int maxPathID = -1;
+
+        for (int i = 0; i < LSD.wave.size(); i++)
+        {
+            if (LSD.wave.get(i).inRange(Tower.this))
+            {
+                if (LSD.wave.get(i).getPathId() > maxPathID)
+                {
+                    maxPathID = LSD.wave.get(i).getPathId(); 
+                    atkindex = i; 
+                    System.out.println ("Checking"); 
+                }
+            }
+        }
+
+        if(atkindex!=-1)
+        {
+            System.out.println ("Attacking"); 
+            try
+            {
+                if(LSD.wave.get(atkindex).inRange(Tower.this)&&LSD.wave.get(atkindex).hit(damage))
+                {
+                    System.out.println("Removed: " + atkindex);
+                    LSD.wave.remove(atkindex); 
+                    LSD.kills++; 
+                    if(LSD.wave.size()==0)
+                        LSD.waveDone = true;
+
+                }
+            }
+            catch(Exception hotfix)
+            {}
+        }       
     }
 }
