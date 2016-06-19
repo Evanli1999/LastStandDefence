@@ -42,6 +42,23 @@ public class Enemy
     return currentHp;
   }
   
+  public void advance()
+  {
+    
+    int posIndex = 0;
+   
+    for(int i = 0; i < LSD.path.size(); i++)
+    {
+      if(LSD.path.get(i).equals(place))
+      {
+        posIndex = i;
+      }
+    }
+    
+    place = new Position(LSD.path.get(posIndex++));
+    
+  }
+  
   /**
    * run it when an enemy is attacked
    * also adds moniez here for simplicity's sake
