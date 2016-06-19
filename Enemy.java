@@ -50,18 +50,13 @@ public class Enemy
    */
   public boolean hit(int power)
   {
-//     System.out.println("Ouch.");
-//     System.out.println("My current HP is: " + currentHp);
-//     currentHp -= power;
-//     System.out.println("My HP Went down to: " +  currentHp);
-    
-    currentHp -= power; 
-    System.out.println ("Damaged for: " + power); 
-    System.out.println (currentHp); 
+    System.out.println("Ouch.");
+    System.out.println("My current HP is: " + currentHp);
+    currentHp -= power;
+    System.out.println("My HP Went down to: " +  currentHp);
     
     if(currentHp<1)
     {
-      System.out.println ("Am dead"); 
       LSD.money += totalHp/2;
       return true;
     }
