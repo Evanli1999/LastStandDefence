@@ -632,6 +632,11 @@ public class LSD
       
     }
     
+    public void fire(int TowerIndex)
+    {
+      
+    }
+    
     public void spawnWave()
     {
       waveDone = false;
