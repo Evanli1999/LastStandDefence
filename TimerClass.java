@@ -34,7 +34,7 @@ class TimerClass
                     }
                 }
             });
-        //timerthread.start();
+        timerthread.start();
     }
 
 }

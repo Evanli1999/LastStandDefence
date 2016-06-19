@@ -87,18 +87,26 @@ public class LSD
     public static void newWave()
     {
 
-        wave = new ArrayList<Enemy>(1);
-
-        for(int i = 0; i < 1; i++)
-        {
-            wave.add(new Enemy(20));
-            System.out.println("Added enemy : " + (i+1));
-        }
-
-        //aBoard.spawnWave();
+        wave = new ArrayList<Enemy>();
         
         moveEnemies mv = new moveEnemies();
         mv.start();
+
+        for(int i = 0; i < 4; i++)
+        {
+            wave.add(new Enemy(20));
+            //System.out.println("Added enemy : " + (i+1));
+            
+            try
+            {
+              Thread.sleep(150);
+            }
+            catch(InterruptedException e)
+            {
+            }
+        }
+
+        //aBoard.spawnWave();
 
     }
     
@@ -108,27 +116,33 @@ public class LSD
       public void run()
       {
         
-        System.out.println("The end of the path: " + path.get(path.size() - 1));
+        waveDone = false;
+        
+        Random rn = new Random();
+        int enemyType = rn.nextInt(3) + 1;
+        
+        //System.out.println("The end of the path: " + path.get(path.size() - 1));
         
         while(wave.size() > 0)
         {
           
-          System.out.println("Wave size is greater than zero.");
+          //System.out.println("Wave size is greater than zero.");
           
           for(int i = 0; i < wave.size(); i++)
           {
             
-            System.out.println("Enemy: " + (i+1));
-            System.out.println("Position is: " + wave.get(i).getPos());
+            //System.out.println("Enemy: " + (i+1));
+            //System.out.println("Position is: " + wave.get(i).getPos());
             
             if(wave.get(i).getPos().equals(path.get(path.size() - 1)))
             {
-              System.out.println("This enemy is at the end of the path; we must remove him.");
+              //System.out.println("This enemy is at the end of the path; we must remove him.");
               wave.remove(i);
+              lives--;
             }
             else
             {
-              System.out.println("Advanced the enemy.");
+              //System.out.println("Advanced the enemy.");
               wave.get(i).advance();
             }
             
@@ -136,13 +150,17 @@ public class LSD
           
           try
           {
-            Thread.sleep(250);
+            Thread.sleep(150);
           }
           catch(InterruptedException e)
           {
           }
           
+          aBoard.drawEnemies(enemyType);
+          
         }
+        
+        waveDone = true;
         
       }
       
@@ -678,100 +696,22 @@ public class LSD
             repaint();
 
         }
-
-        public void spawnWave()
+        
+        public void drawEnemies(int enemyType)
         {
-            waveDone = false;
-            spawnEnemies spawner = new spawnEnemies(wave); // Creates a new spawnEnemies thread that will spawn one wave
-            spawner.start();                                // Starts the spawner thread; spawner will run until it's finished spawning and moving that wave
-        }
-
-        class spawnEnemies extends Thread
-        {
-
-            ArrayList<Enemy> enems = new ArrayList<Enemy>(); // The list of enemies
-
-            public spawnEnemies(ArrayList<Enemy> enems)      // Constructor, takes in a list of enemies
-            {
-                this.enems = enems;
-            }
-
-            public void run() // The thread that will be run
-            {
-
-                int leftToSpawn = wave.size(); // The number of enemies that still have to be spawned
-                int leftInWave  = wave.size(); // The number of enemies that are still on the wave
-
-                int progress = 0; // The number of times the thread will have executed; allows me to determine spawn start location
-
-                int startSpawningAt = 0;
-
-                Random rn = new Random();
-                int enemID = rn.nextInt(3) + 1;
-
-                while(leftInWave > 0)
-                {
-
-                    //System.out.println("There are : " + leftInWave + " enemies left in the wave!");
-
-                    //System.out.println(waveDone);
-
-                    if(leftToSpawn > 0)
-                    {
-                        //System.out.println("Spawned enemy index: " + (wave.size() - leftToSpawn));
-                        enemies.add(new MiscImage(wave.get(wave.size() - leftToSpawn).getPos(), "resources/enemies/" + enemID + ".png"));
-                        leftToSpawn --;
-                    }
-
-                    progress++;
-
-                    if(((progress-1)) >= path.size())
-                    {
-                        //System.out.println("???");
-                        startSpawningAt = path.size() - 1;
-                        leftInWave --;
-                        enemies.remove(0);
-                        lives--;
-                    }
-
-                    else
-                    {
-
-                        for(int i = 0; i < progress; i++)
-                        {
-                            startSpawningAt = (progress - 1);
-                        }
-
-                    }
-
-                    //System.out.println("Objects will start to be spawned at: " + startSpawningAt);
-
-                    for(int i = 0; i < leftInWave-leftToSpawn; i++)
-                    {
-                        wave.get(i).setPos(new Position(path.get(startSpawningAt - (i))));
-                        enemies.get(i).setPos(wave.get(i).getPos());
-                        revert();
-                        repaint();
-                        //System.out.println("Position for enemy " + (i+1) + " is: " + wave.get(i).getPos());
-                    }
-
-                    try
-                    {
-                        Thread.sleep(100);
-                    }
-                    catch(InterruptedException e)
-                    {
-                    }
-
-                }
-                //System.out.println("We're done spawning.");
-                revert();
-                repaint();
-                waveDone = true;
-                System.out.println("Yay, the wave's done!");
-
-            }
-
+          
+          Random rn = new Random();
+          enemies = new ArrayList<MiscImage>();
+          
+          for(int i = 0; i < wave.size(); i++)
+          {
+            enemies.add(new MiscImage(wave.get(i).getPos(), "resources/enemies/" + enemyType + ".png"));
+            
+          }
+          
+          revert();
+          repaint();
+          
         }
 
         class msListen implements MouseListener, MouseMotionListener
