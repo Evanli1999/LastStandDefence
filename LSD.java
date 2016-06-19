@@ -53,10 +53,18 @@ public class LSD
     
     Scanner little = new Scanner(System.in);
     
-    while(true)
+    while(lives > 0)
     {
       
-      while(!nextWaveClicked && !builtTower){ System.out.print(""); }
+      while(!nextWaveClicked && !builtTower && lives > 0){ System.out.print(""); }
+      
+      if(lives == 0)
+      {
+        aBoard.dispose();
+        GameOver go = new GameOver();
+        go.setVisible(true);
+        break;
+      }
       
       if(nextWaveClicked)
       {
@@ -70,6 +78,8 @@ public class LSD
       }
       
     }
+    
+    System.out.println("Game fucking over, bitch.");
     
     /*
      while(true)
@@ -95,7 +105,7 @@ public class LSD
     
     for(int i = 0; i < 6; i++)
     {
-      wave.add(new Enemy(120));
+      wave.add(new Enemy(150));
       //System.out.println("Added enemy : " + (i+1));
       
       try
@@ -281,6 +291,30 @@ public class LSD
     }
     
     return toR;
+  }
+  
+  static class GameOver extends JFrame
+  {
+    
+    protected MiscImage bg = new MiscImage(0, 0, 0, 0, "resources/entities/gameover.png");
+    
+    protected DrawArea main;
+    
+    public GameOver()
+    {
+      
+      main = new DrawArea(500, 500);
+      main.add(bg);
+      
+      setContentPane(main);                                   // set the content pane to be whatever content pane contains all the others
+      pack ();                                                // this is apparently required
+      setTitle ("Game Over");                                 // set the title of the window
+      setSize (500, 500);                                     // set the size of the window (in pixels)
+      setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);     // set the close operation (just use EXIT_ON_CLOSE, we're not one of those dicks who minimizes windows when the user hits close)
+      setLocationRelativeTo (null);                           // Center window.
+      
+    }
+    
   }
   
   static class TowerDetails extends JFrame
