@@ -59,7 +59,7 @@ public class Tower
         while (true)
         {
           //System.out.println("true is always true...");
-          System.out.println("LSD.waveDone: " + LSD.waveDone);
+          //System.out.println("LSD.waveDone: " + LSD.waveDone);
           while (!LSD.waveDone)
           {
             //System.out.println("so I guess the wave's not done..?");
@@ -104,7 +104,7 @@ public class Tower
       }
     });
     
-    atkseq.start();
+    //atkseq.start();
     
   }
   

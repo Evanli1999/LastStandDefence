@@ -658,6 +658,8 @@ public class LSD
         
         while(leftInWave > 0)
         {
+          
+          //System.out.println("There are : " + leftInWave + " enemies left in the wave!");
         
           System.out.println(waveDone);
           
@@ -762,13 +764,7 @@ public class LSD
             }
             else
             {
-              revert();
-              turrets.add(new MiscImage(40 + select.getX() * 40, 40, 40 + select.getY() * 40, 40, "resources/turrets/" + currentTurretID + ".png"));
-              revert();
-              repaint();
-              
               LSD.addTower(select, currentTurretID);
-              
             }
             
           }
