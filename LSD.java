@@ -33,15 +33,14 @@ public class LSD
     public static void main(String args[])
     {
 
-        System.out.println("LSD v.0.5 Codename 'Carnival Dayo~'\n");
+        System.out.println("LSD v.0.9 Codename '~Bless'\n");
         TimerClass abcde = new TimerClass();
         try
         {
-            ArrayList<String> pathtemp = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n').get(0),'#');
-            //ArrayList<String> pricetemp = parse(parse(new String(Files.readAllBytes(Paths.get("properties.txt"))),'\n').get(0),'#');
-            for(int a = 0;a<pathtemp.size();a++)
+            String pathtemp[] = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n')[0],'#');
+            for(int a = 0;a<pathtemp.length;a++)
             {
-                path.add(new Position(pathtemp.get(a)));
+                path.add(new Position(pathtemp[a]));
             }
 
         }
@@ -291,7 +290,7 @@ public class LSD
         }
     }
 
-    public static ArrayList<String> parse(String parseThis,char delimiter)
+    public static String[] parse(String parseThis,char delimiter)
     {
         int width = 0,elements = 0,temp = 0;
 
@@ -303,40 +302,25 @@ public class LSD
             }
         }
 
-        ArrayList<String> toR = new ArrayList<String>();
+        String[] toR = new String[width+1];
 
         if(width==0)
         {
-            toR.add(parseThis);
+            toR[0] = parseThis;
             return toR;
         }
 
-        for(int b = 0;elements<width;b++)
+        for(int b = 0;elements<toR.length-1;b++)
         {
-            if(elements>=width-1)//if last element copy the rest
-            {
-                toR.add(parseThis.substring(temp));
-                break;
-            }
-
-            if(b>=parseThis.length())//if we are at the end of the line before all the elements filled
-            {
-                while(elements<width)
-                {
-                    toR.add("");//just fill it with blank then
-                    elements++;
-                }
-
-                break;
-            }
-
             if(parseThis.charAt(b)==delimiter)//delimiter is the comma
             {
-                toR.add(parseThis.substring(temp,b));//set the former stuff to the element
+                toR[elements] = parseThis.substring(temp,b);//set the former stuff to the element
                 temp = b+1;//shorten the string we have to work with
                 elements++;//go to next element
             }
         }
+
+        toR[toR.length-1] = parseThis.substring(temp);
 
         return toR;
     }
