@@ -32,29 +32,29 @@ public class Tower
 
         if(id == 1) // The cannon; slow-firing with low range, but relatively nice damage
         {
-            period = 500;
+            period = 1250;
             damage = 15;
-            range = 3;
+            range = 5;
         }
 
         else if(id == 2) // The laser; this piece of shit doesn't really have any redeeming qualities
         {
             period = 900;
-            damage = 6;
-            range = 6;
+            damage = 7;
+            range = 7;
         }
 
         else if(id == 3) // The rocket; this thing is OP as fuck because of its long range
         {
-            period = 3000;
+            period = 1750;
             damage = 25;
             range = 10;
         }
 
         else if(id == 4) // The taser; basically just RoF
         {
-            period = 100;
-            damage = 3;
+            period = 250;
+            damage = 2;
             range = 1;
         }
     }
@@ -136,9 +136,9 @@ public class Tower
         {
             System.out.println("Upgrading rate");
 
-            if(LSD.money<100*(int)Math.pow(2,upPeriod+1))
+            if(LSD.money<(int)Math.pow(2,upPeriod+1))
                 return false;
-            LSD.money-=100*(int)Math.pow(2,upPeriod+1);
+            LSD.money-=(int)Math.pow(2,upPeriod+1);
             upPeriod++;
             if (id != 4)
             {
@@ -161,33 +161,31 @@ public class Tower
         {
 
             System.out.println("Upgrading Range");
-            if(LSD.money<100*(int)Math.pow(2,upRange+1))
+            if(LSD.money<(int)Math.pow(2,upRange+1))
                 return false;
-            LSD.money-=100*(int)Math.pow(2,upRange+1);
+            LSD.money-=(int)Math.pow(2,upRange+1);
+            upRange++;
+            if (id != 4&&(upRange/2)*2 == upRange)
+            {
+                System.out.println ("Upgraded Range"); 
+                range = range++;
+            }
+            
             if (id == 4 && upDamage == 8 && upPeriod == 8 && upRange == 8) //taser special ability
             {
                 overheat = true; 
                 damage*= 3; 
                 range += 5;  
             }
-            else
-            {
-                upRange++;
-                range++;
-            }
-            System.out.println("Range is now "+range);
             return true;
         }
         else if(statToUpgrade.toLowerCase().equals("damage"))
         {
 
             System.out.println("Upgrading Damage");
-            if(LSD.money<100*(int)Math.pow(2,upDamage+1))
-            {
-                System.out.println("NO MONEY for upgrading damage.");
-                return false;
-            }
-            LSD.money-=100*(int)Math.pow(2,upDamage+1);
+            if(LSD.money<(int)Math.pow(2,upDamage+1))
+                System.out.println("NO MONEY");
+            LSD.money-=(int)Math.pow(2,upDamage+1);
             upDamage++;
             System.out.println("upDamage: " + upDamage);
             damage++;
@@ -209,7 +207,7 @@ public class Tower
     protected void fire()
     {
         atkindex = -1; 
-        //System.out.println("atkindex: " + atkindex);
+        System.out.println("atkindex: " + atkindex);
         int maxPathID = -1;
 
         for (int i = 0; i < LSD.wave.size(); i++)
