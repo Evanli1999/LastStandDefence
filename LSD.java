@@ -10,6 +10,7 @@ import javax.swing.*;
 
 public class LSD
 {
+    //static variables:  values that other classes might ned
     protected static boolean hasend = false; 
 
     protected static int money = 1000;
@@ -18,6 +19,8 @@ public class LSD
     protected static int kills = 0; 
     protected static int lives = 10;
     static GameBoard aBoard;
+    //list of towers we may need
+    
     static ArrayList<Tower> towers = new ArrayList<Tower>();
     static ArrayList<Position> path = new ArrayList<Position>();
     static ArrayList<Enemy> wave = new ArrayList<Enemy>();
@@ -296,7 +299,7 @@ public class LSD
 
         for(int a = 0; a < parseThis.length();a++)//check the first row to see what the dimension should be
         {
-            if(parseThis.charAt(a) == ',')
+            if(parseThis.charAt(a) == delimiter)
             {
                 width++;
             }
