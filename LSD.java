@@ -10,7 +10,6 @@ import javax.swing.*;
 
 public class LSD
 {
-    //static variables:  values that other classes might ned
     protected static boolean hasend = false; 
 
     protected static int money = 1000;
@@ -19,8 +18,6 @@ public class LSD
     protected static int kills = 0; 
     protected static int lives = 10;
     static GameBoard aBoard;
-    //list of towers we may need
-    
     static ArrayList<Tower> towers = new ArrayList<Tower>();
     static ArrayList<Position> path = new ArrayList<Position>();
     static ArrayList<Enemy> wave = new ArrayList<Enemy>();
@@ -36,14 +33,15 @@ public class LSD
     public static void main(String args[])
     {
 
-        System.out.println("LSD v.0.9 Codename '~Bless'\n");
+        System.out.println("LSD v.0.5 Codename 'Carnival Dayo~'\n");
         TimerClass abcde = new TimerClass();
         try
         {
-            String pathtemp[] = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n')[0],'#');
-            for(int a = 0;a<pathtemp.length;a++)
+            ArrayList<String> pathtemp = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n').get(0),'#');
+            //ArrayList<String> pricetemp = parse(parse(new String(Files.readAllBytes(Paths.get("properties.txt"))),'\n').get(0),'#');
+            for(int a = 0;a<pathtemp.size();a++)
             {
-                path.add(new Position(pathtemp[a]));
+                path.add(new Position(pathtemp.get(a)));
             }
 
         }
@@ -293,37 +291,52 @@ public class LSD
         }
     }
 
-    public static String[] parse(String parseThis,char delimiter)
+    public static ArrayList<String> parse(String parseThis,char delimiter)
     {
         int width = 0,elements = 0,temp = 0;
 
         for(int a = 0; a < parseThis.length();a++)//check the first row to see what the dimension should be
         {
-            if(parseThis.charAt(a) == delimiter)
+            if(parseThis.charAt(a) == ',')
             {
                 width++;
             }
         }
 
-        String[] toR = new String[width+1];
+        ArrayList<String> toR = new ArrayList<String>();
 
         if(width==0)
         {
-            toR[0] = parseThis;
+            toR.add(parseThis);
             return toR;
         }
 
-        for(int b = 0;elements<toR.length-1;b++)
+        for(int b = 0;elements<width;b++)
         {
+            if(elements>=width-1)//if last element copy the rest
+            {
+                toR.add(parseThis.substring(temp));
+                break;
+            }
+
+            if(b>=parseThis.length())//if we are at the end of the line before all the elements filled
+            {
+                while(elements<width)
+                {
+                    toR.add("");//just fill it with blank then
+                    elements++;
+                }
+
+                break;
+            }
+
             if(parseThis.charAt(b)==delimiter)//delimiter is the comma
             {
-                toR[elements] = parseThis.substring(temp,b);//set the former stuff to the element
+                toR.add(parseThis.substring(temp,b));//set the former stuff to the element
                 temp = b+1;//shorten the string we have to work with
                 elements++;//go to next element
             }
         }
-
-        toR[toR.length-1] = parseThis.substring(temp);
 
         return toR;
     }

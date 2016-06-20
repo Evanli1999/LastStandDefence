@@ -84,21 +84,21 @@ public class Enemy
             //System.out.println ("Am dead"); 
             if (totalHp < 60)
             {
-                LSD.money += (totalHp+30);
+                LSD.money += (totalHp);
             }
             else
             if (totalHp < 250)
             {
-                LSD.money += (30+totalHp/3)+50; 
+                LSD.money += (30+totalHp/4); 
             }
             else
             if (totalHp < 500)
             {
-                LSD.money += (100+totalHp/4); 
+                LSD.money += (100+totalHp/8); 
             }
             else
             {
-                LSD.money += (250+LSD.waves/2); 
+                LSD.money += (100+LSD.waves/2); 
             }
             return true;
         }
