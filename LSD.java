@@ -33,17 +33,16 @@ public class LSD
     public static void main(String args[])
     {
 
-        System.out.println("LSD v.0.5 Codename 'Carnival Dayo~'\n");
+        System.out.println("LSD v.0.9 Codename 'Bless~'\n");
         TimerClass abcde = new TimerClass();
         try
         {
-            ArrayList<String> pathtemp = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n').get(0),'#');
+            String pathtemp[] = parse(parse(new String(Files.readAllBytes(Paths.get("paths.txt"))),'\n')[0],'#');
             //ArrayList<String> pricetemp = parse(parse(new String(Files.readAllBytes(Paths.get("properties.txt"))),'\n').get(0),'#');
-            for(int a = 0;a<pathtemp.size();a++)
+            for(int a = 0;a<pathtemp.length;a++)
             {
-                path.add(new Position(pathtemp.get(a)));
+                path.add(new Position(pathtemp[a]));
             }
-
         }
         catch(IOException e)
         {
@@ -102,73 +101,56 @@ public class LSD
 
         moveEnemies mv = new moveEnemies();
         mv.start();
-        if (waves < 6)
+        String[] tempWave = null;
+        try
         {
-            for(int i = 0; i < 7+waves/3; i++)
+            if(waves>parse(new String(Files.readAllBytes(Paths.get("waves.txt"))),'\n').length)
             {
-                wave.add(new Enemy(+30*waves));
-                //adding the enemies to the arraylist of enemies
-
-                try
-                {
-                    Thread.sleep(150);
-                }
-                catch(InterruptedException e)
-                {
-                }
+                System.out.println("You have passed the last level. Wanna do anything else?");
             }
         }
-        if (waves > 5 && waves < 20)
+        catch(IOException eee)
         {
-            for(int i = 0; i < 7+waves/2; i++)
-            {
-                wave.add(new Enemy(150+30*(waves-5)));
-                //adding the enemies to the arraylist of enemies
-
-                try
-                {
-                    Thread.sleep(150);
-                }
-                catch(InterruptedException e)
-                {
-                }
-            }
         }
-        if (waves > 19 && waves < 46)
+        try
         {
-            for(int i = 0; i < 20+waves/2; i++)
-            {
-                wave.add(new Enemy(600+35*(waves-19)));
-                //adding the enemies to the arraylist of enemies
-
-                try
-                {
-                    Thread.sleep(150);
-                }
-                catch(InterruptedException e)
-                {
-                }
-            }
+            tempWave = parse(parse(new String(Files.readAllBytes(Paths.get("waves.txt"))),'\n')[waves],',');
         }
-        if (waves > 45)
+        catch(IOException eee)
         {
-            for(int i = 0; i < 20+waves; i++)
-            {
-                wave.add(new Enemy(975+50*(waves-45)));
-                //adding the enemies to the arraylist of enemies
-
-                try
-                {
-                    Thread.sleep(150);
-                }
-                catch(InterruptedException e)
-                {
-                }
-            }
+            System.out.println("Could not make wave---are you using the right file/ or passed all levels?");
+            tempWave = new String[3];
+            tempWave[0]=("69");
+            tempWave[1]=("69");
+            tempWave[2]=("69");
         }
 
-        //aBoard.spawnWave();
+        int tempHP = 20,tempSPD = 300,tempCOUNT = 20;
+        try
+        {
+            tempHP = Integer.parseInt(tempWave[0]);
+            tempSPD = Integer.parseInt(tempWave[1]);
+            tempCOUNT = Integer.parseInt(tempWave[2]);
+            System.out.println("This wave has HP "+tempWave[0]+", SPD "+tempWave[1]+" and COUNT "+tempWave[2]);
+        }
+        catch(Exception eee)
+        {}
+
+        for(int i = 0; i < tempCOUNT; i++)
+        {
+            wave.add(new Enemy(+tempHP));
+            //adding the enemies to the arraylist of enemies
+
+            try
+            {
+                Thread.sleep(tempSPD);
+            }
+            catch(InterruptedException e)
+            {
+            }
+        }
     }
+
     static class moveEnemies extends Thread
     {
 
@@ -223,9 +205,7 @@ public class LSD
             waveDone = true;
 
         }
-
     }
-
     public static boolean canBuild(Position place)
     {
         for(int a = 0;a<path.size();a++)
@@ -291,52 +271,37 @@ public class LSD
         }
     }
 
-    public static ArrayList<String> parse(String parseThis,char delimiter)
+    public static String[] parse(String parseThis,char delimiter)
     {
         int width = 0,elements = 0,temp = 0;
 
         for(int a = 0; a < parseThis.length();a++)//check the first row to see what the dimension should be
         {
-            if(parseThis.charAt(a) == ',')
+            if(parseThis.charAt(a) == delimiter)
             {
                 width++;
             }
         }
 
-        ArrayList<String> toR = new ArrayList<String>();
+        String[] toR = new String[width+1];
 
         if(width==0)
         {
-            toR.add(parseThis);
+            toR[0] = parseThis;
             return toR;
         }
 
-        for(int b = 0;elements<width;b++)
+        for(int b = 0;elements<toR.length-1;b++)
         {
-            if(elements>=width-1)//if last element copy the rest
-            {
-                toR.add(parseThis.substring(temp));
-                break;
-            }
-
-            if(b>=parseThis.length())//if we are at the end of the line before all the elements filled
-            {
-                while(elements<width)
-                {
-                    toR.add("");//just fill it with blank then
-                    elements++;
-                }
-
-                break;
-            }
-
             if(parseThis.charAt(b)==delimiter)//delimiter is the comma
             {
-                toR.add(parseThis.substring(temp,b));//set the former stuff to the element
+                toR[elements] = parseThis.substring(temp,b);//set the former stuff to the element
                 temp = b+1;//shorten the string we have to work with
                 elements++;//go to next element
             }
         }
+
+        toR[toR.length-1] = parseThis.substring(temp);
 
         return toR;
     }
@@ -1262,5 +1227,5 @@ public class LSD
         }
 
     }
-
 }
+
